@@ -2,9 +2,12 @@
 // Variables preparadas desde index.php (case 'mis_pedidos'):
 // $pedidosMis, $pedidoMisModel
 
+require_once __DIR__ . '/../../models/Envio.php';
+
 // Usar las variables del router
 $pedidos     = $pedidosMis    ?? [];
 $pedidoModel = $pedidoMisModel ?? new Pedido();
+$envioModel  = new Envio();
 ?>
 
 <div class="container mt-5 mb-5">
@@ -114,6 +117,12 @@ $pedidoModel = $pedidoMisModel ?? new Pedido();
                                             ↩️
                                         </a>
                                     <?php endif; ?>
+                                    <!-- Link a mis devoluciones si ya tiene una -->
+                                    <a href="index.php?action=mis_devoluciones"
+                                       class="btn btn-sm btn-outline-secondary"
+                                       title="Ver mis devoluciones">
+                                        📋
+                                    </a>
                                 </div>
 
                             </div>
@@ -123,7 +132,43 @@ $pedidoModel = $pedidoMisModel ?? new Pedido();
                                  style="display:none; margin-top:16px;">
                                 <?php
                                 $detalle = $pedidoModel->obtenerDetalle($p['id_pedido']);
+                                $envio   = $envioModel->obtenerPorPedido($p['id_pedido']);
                                 ?>
+
+                                <!-- INFO DE ENVÍO si existe -->
+                                <?php if ($envio): ?>
+                                <?php
+                                $estadoEnvio = $envio['estado'] ?? '';
+                                $badgeEnvio  = match($estadoEnvio) {
+                                    'en_camino'  => 'bg-primary',
+                                    'entregado'  => 'bg-success',
+                                    'devuelto'   => 'bg-warning text-dark',
+                                    default      => 'bg-secondary'
+                                };
+                                $labelEnvio = match($estadoEnvio) {
+                                    'en_camino'  => '🚚 En camino',
+                                    'entregado'  => '✅ Entregado',
+                                    'devuelto'   => '↩️ Devuelto',
+                                    default      => ucfirst($estadoEnvio)
+                                };
+                                ?>
+                                <div style="background:#eff6ff;border:2px solid #bfdbfe;border-radius:12px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+                                    <span style="font-size:24px;">🚚</span>
+                                    <div style="flex:1;">
+                                        <div style="font-weight:700;font-size:13px;color:#1e40af;margin-bottom:2px;">
+                                            Información de envío
+                                        </div>
+                                        <div style="font-size:13px;color:#374151;">
+                                            <strong>Empresa:</strong> <?= htmlspecialchars($envio['empresa_envios'] ?? '—') ?>
+                                            &nbsp;·&nbsp;
+                                            <strong>Dirección:</strong> <?= htmlspecialchars($envio['direccion_envio'] ?? '—') ?>
+                                            &nbsp;·&nbsp;
+                                            <strong>Fecha:</strong> <?= $envio['fecha_hora'] ? date('d/m/Y H:i', strtotime($envio['fecha_hora'])) : '—' ?>
+                                        </div>
+                                    </div>
+                                    <span class="badge <?= $badgeEnvio ?>"><?= $labelEnvio ?></span>
+                                </div>
+                                <?php endif; ?>
 
                                 <?php if (!empty($detalle)): ?>
                                     <table class="table table-sm table-bordered mb-0">

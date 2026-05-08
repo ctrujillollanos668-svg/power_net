@@ -26,7 +26,6 @@ class OrderController {
         $carrito = $_SESSION['carrito'];
 
         // 🔥 OBTENER USUARIO
-        // 🔥 OBTENER USUARIO
 $id_usuario = $_SESSION['usuario']['id'];
 
 // 🔍 BUSCAR CLIENTE CORRECTAMENTE

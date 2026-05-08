@@ -9,13 +9,24 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] != 1) {
 
 // 📦 PRODUCTOS
 require_once __DIR__ . '/../../../models/Product.php';
-$product = new Product();
+$product  = new Product();
 $productos = $product->obtenerTodosAdmin();
 
 // 📂 CATEGORÍAS
 require_once __DIR__ . '/../../../models/Category.php';
-$category = new Category();
+$category  = new Category();
 $categorias = $category->obtenerTodas();
+
+// 🏷️ OFERTAS ACTIVAS (para saber qué productos ya tienen oferta)
+require_once __DIR__ . '/../../../models/Oferta.php';
+$ofertaModel   = new Oferta();
+$ofertasActivas = $ofertaModel->obtenerActivas();
+
+// Indexar por id_producto para acceso rápido
+$ofertasPorProducto = [];
+foreach ($ofertasActivas as $o) {
+    $ofertasPorProducto[$o['id_producto']] = $o;
+}
 ?>
 
 <!DOCTYPE html>
@@ -60,6 +71,7 @@ $categorias = $category->obtenerTodas();
     <th>Precio</th>
     <th>Stock</th>
     <th>Categoría</th>
+    <th>Oferta</th>
     <th>Estado</th>
     <th>Acciones</th>
 </tr>
@@ -134,6 +146,37 @@ $imgPrincipal = !empty($imagenes) ? $imagenes[0]['imagen'] : '';
     <?php else: ?>
         <span class="badge bg-secondary">Inactivo</span>
     <?php endif; ?>
+</td>
+
+<td>
+<?php
+$ofertaActiva = $ofertasPorProducto[$p['id_producto']] ?? null;
+if ($ofertaActiva):
+?>
+    <div>
+        <span class="badge bg-danger">-<?= $ofertaActiva['descuento'] ?>%</span>
+        <div class="small text-success fw-bold">$<?= number_format($ofertaActiva['precio_oferta'], 0, ',', '.') ?></div>
+        <div class="small text-muted" style="font-size:10px;">
+            hasta <?= date('d/m/Y', strtotime($ofertaActiva['fecha_fin'])) ?>
+        </div>
+        <a href="/power-net/public/index.php?action=desactivar_oferta&id=<?= $ofertaActiva['id_oferta'] ?>"
+           class="btn btn-xs btn-outline-danger mt-1"
+           style="font-size:11px;padding:1px 6px;"
+           onclick="return confirm('¿Desactivar esta oferta?')">
+           Desactivar
+        </a>
+    </div>
+<?php else: ?>
+    <button class="btn btn-sm btn-outline-warning"
+            data-bs-toggle="modal"
+            data-bs-target="#modalOferta"
+            data-id="<?= $p['id_producto'] ?>"
+            data-nombre="<?= htmlspecialchars($p['nombre']) ?>"
+            data-precio="<?= $p['precio'] ?>"
+            title="Crear oferta">
+        🏷️
+    </button>
+<?php endif; ?>
 </td>
 
 <td>
@@ -404,8 +447,7 @@ document.getElementById('buscarProducto').addEventListener('keyup', function() {
     document.querySelectorAll('#tablaProductos tbody tr').forEach(r => {
         r.style.display = r.innerText.toLowerCase().includes(f) ? '' : 'none';
     });
-});
-// EDITAR
+});// EDITAR
 document.getElementById('modalEditar').addEventListener('show.bs.modal', function (e) {
 
     let b = e.relatedTarget;
@@ -461,6 +503,104 @@ document.getElementById('modalEliminar').addEventListener('show.bs.modal', funct
     }
 
 });
+</script>
+
+<!-- ================= MODAL OFERTA ================= -->
+<div class="modal fade" id="modalOferta">
+<div class="modal-dialog modal-dialog-centered">
+<div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+
+<form method="POST" action="/power-net/public/index.php?action=guardar_oferta">
+
+<div class="modal-header bg-warning text-dark">
+    <h5 class="mb-0 fw-bold">🏷️ Crear Oferta — <span id="oferta_nombre_titulo"></span></h5>
+    <button class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+
+<div class="modal-body p-4">
+
+    <input type="hidden" name="id_producto" id="oferta_id_producto">
+
+    <!-- Precio original (referencia) -->
+    <div class="alert alert-light border mb-3">
+        <small class="text-muted">Precio original:</small>
+        <strong id="oferta_precio_original" class="ms-2"></strong>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-6">
+            <label class="form-label fw-semibold">Precio de oferta <span class="text-danger">*</span></label>
+            <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input type="number" name="precio_oferta" id="oferta_precio"
+                       class="form-control" placeholder="0" min="1"
+                       oninput="calcularDescuento()" required>
+            </div>
+        </div>
+        <div class="col-6">
+            <label class="form-label fw-semibold">% Descuento</label>
+            <div class="input-group">
+                <input type="number" name="descuento" id="oferta_descuento"
+                       class="form-control" placeholder="0" min="0" max="99"
+                       oninput="calcularPrecio()" readonly>
+                <span class="input-group-text">%</span>
+            </div>
+            <small class="text-muted">Se calcula automáticamente</small>
+        </div>
+        <div class="col-6">
+            <label class="form-label fw-semibold">Fecha inicio <span class="text-danger">*</span></label>
+            <input type="date" name="fecha_inicio" class="form-control"
+                   value="<?= date('Y-m-d') ?>" required>
+        </div>
+        <div class="col-6">
+            <label class="form-label fw-semibold">Fecha fin <span class="text-danger">*</span></label>
+            <input type="date" name="fecha_fin" class="form-control"
+                   value="<?= date('Y-m-d', strtotime('+30 days')) ?>" required>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal-footer bg-light">
+    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+    <button class="btn btn-warning fw-bold px-4">🏷️ Crear oferta</button>
+</div>
+
+</form>
+</div>
+</div>
+</div>
+
+<script>
+// Abrir modal de oferta con datos del producto
+document.getElementById('modalOferta').addEventListener('show.bs.modal', function(e) {
+    const btn    = e.relatedTarget;
+    const id     = btn.dataset.id;
+    const nombre = btn.dataset.nombre;
+    const precio = parseFloat(btn.dataset.precio);
+
+    document.getElementById('oferta_id_producto').value    = id;
+    document.getElementById('oferta_nombre_titulo').textContent = nombre;
+    document.getElementById('oferta_precio_original').textContent =
+        '$' + precio.toLocaleString('es-CO');
+    document.getElementById('oferta_precio').value      = '';
+    document.getElementById('oferta_descuento').value   = '';
+
+    // Guardar precio original para cálculos
+    document.getElementById('oferta_precio').dataset.original = precio;
+});
+
+// Calcular % descuento al escribir precio de oferta
+function calcularDescuento() {
+    const precioOferta   = parseFloat(document.getElementById('oferta_precio').value);
+    const precioOriginal = parseFloat(document.getElementById('oferta_precio').dataset.original);
+    if (precioOferta && precioOriginal && precioOferta < precioOriginal) {
+        const desc = Math.round((1 - precioOferta / precioOriginal) * 100);
+        document.getElementById('oferta_descuento').value = desc;
+    } else {
+        document.getElementById('oferta_descuento').value = 0;
+    }
+}
 </script>
 
 </body>

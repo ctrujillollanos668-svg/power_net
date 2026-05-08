@@ -15,13 +15,15 @@ class Oferta {
         $sql = "SELECT p.*, c.nombre_categoria,
                        o.precio_oferta,
                        o.descuento,
-                       o.id_oferta
+                       o.id_oferta,
+                       o.fecha_inicio,
+                       o.fecha_fin
                 FROM oferta o
                 INNER JOIN productos p ON o.id_producto = p.id_producto
                 LEFT JOIN  categoria c ON p.id_categoria = c.id_categoria
                 WHERE o.estado = 1
-                AND   o.fecha_inicio <= CURDATE()
-                AND   o.fecha_fin    >= CURDATE()
+                AND   DATE(o.fecha_inicio) <= CURDATE()
+                AND   DATE(o.fecha_fin)    >= CURDATE()
                 AND   p.disponibilidad = 1
                 AND   p.stock > 0
                 ORDER BY o.id_oferta DESC";
@@ -33,11 +35,12 @@ class Oferta {
 
     // Verifica si un producto tiene oferta activa hoy y la retorna
     public function obtenerPorProducto($id_producto) {
+        // Busca cualquier oferta activa del producto, sin filtro de fecha
+        // para poder desactivarla antes de crear una nueva
         $sql = "SELECT * FROM oferta
                 WHERE id_producto = ?
                 AND   estado = 1
-                AND   fecha_inicio <= CURDATE()
-                AND   fecha_fin    >= CURDATE()
+                ORDER BY id_oferta DESC
                 LIMIT 1";
 
         $stmt = $this->conn->prepare($sql);

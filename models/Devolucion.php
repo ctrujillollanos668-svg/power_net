@@ -92,4 +92,47 @@ class Devolucion {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    // Cambia el estado (pendiente/aprobada/rechazada/completada)
+    public function cambiarEstado($id_devolucion, $estado, $motivo_rechazo = null) {
+        try {
+            $sql  = "UPDATE devolucion SET estado = ?, motivo_rechazo = ? WHERE id_devolucion = ?";
+            $stmt = $this->conn->prepare($sql);
+            return $stmt->execute([$estado, $motivo_rechazo, $id_devolucion]);
+        } catch (\PDOException $e) {
+            $sql  = "UPDATE devolucion SET estado = ? WHERE id_devolucion = ?";
+            $stmt = $this->conn->prepare($sql);
+            return $stmt->execute([$estado, $id_devolucion]);
+        }
+    }
+
+    // Filtra devoluciones por estado y fechas
+    public function filtrar($estado = null, $desde = null, $hasta = null) {
+        $sql    = "SELECT d.*, pe.nombre_persona AS nombre_cliente, p.total_pedido
+                   FROM devolucion d
+                   INNER JOIN pedido p   ON d.id_pedido  = p.id_pedido
+                   INNER JOIN cliente c  ON p.id_cliente = c.id_cliente
+                   INNER JOIN persona pe ON c.id_persona = pe.id_persona
+                   WHERE 1=1";
+        $params = [];
+        if ($estado) { $sql .= " AND d.estado = ?";                        $params[] = $estado; }
+        if ($desde)  { $sql .= " AND DATE(d.fecha_devolucion) >= ?";       $params[] = $desde; }
+        if ($hasta)  { $sql .= " AND DATE(d.fecha_devolucion) <= ?";       $params[] = $hasta; }
+        $sql .= " ORDER BY d.id_devolucion DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Trae devoluciones de un cliente con estado (para vista del cliente)
+    public function obtenerPorClienteConEstado($id_cliente) {
+        $sql  = "SELECT d.*, p.total_pedido, p.estado_pedido, p.fecha_pedido
+                 FROM devolucion d
+                 INNER JOIN pedido p ON d.id_pedido = p.id_pedido
+                 WHERE p.id_cliente = ?
+                 ORDER BY d.id_devolucion DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$id_cliente]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

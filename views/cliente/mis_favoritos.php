@@ -4,7 +4,7 @@ $favoritos    = $favoritosMis   ?? [];
 $favoritoIds  = $favoritoIdsMis ?? [];
 $productModel = $prodFavModel   ?? new Product();
 ?>
-?>
+
 
 <div class="container mt-5 mb-5">
 

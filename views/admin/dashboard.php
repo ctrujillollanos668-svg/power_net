@@ -40,17 +40,12 @@ $pedidosPendientes = count(array_filter($pedidos, fn($p) => strtolower($p['estad
 $ventaModel  = new Venta();
 $totalesVenta = $ventaModel->totales();
 $ventasHoy   = 0;
-$ventasDia   = $ventaModel->ventasPorDia(1); // hoy
+$ventasDia   = $ventaModel->ventasPorDia(1);
 if (!empty($ventasDia)) {
     $ventasHoy = $ventasDia[0]['monto_total'] ?? 0;
 }
 $ventasTotales = $totalesVenta['monto_total'] ?? 0;
 $totalVentas   = $totalesVenta['total_ventas'] ?? 0;
-
-// Inventario: últimos movimientos
-$invModel    = new Inventario();
-$movimientos = $invModel->obtenerMovimientos(5);
-$topProductos = $ventaModel->topProductos(5);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -67,18 +62,11 @@ $topProductos = $ventaModel->topProductos(5);
 
 <body>
 
-<!-- ✅ HEADER -->
 <?php include __DIR__ . '/partials/header.php'; ?>
+<?php include __DIR__ . '/partials/sidebar.php'; ?>
 
-<div class="d-flex">
-
-    <!-- ✅ SIDEBAR -->
-    <?php include __DIR__ . '/partials/sidebar.php'; ?>
-
-    <!-- CONTENIDO -->
-    <div class="flex-grow-1 p-4" style="margin-left: 250px; margin-top: 70px;">
-
-        <h2 class="mb-4">📊 Panel Administrador</h2>
+<div class="admin-content">
+    <div class="page-title">📊 Panel Administrador</div>
 
         <!-- 🔥 TARJETAS DASHBOARD -->
    <div class="row mb-4 g-3">
@@ -171,63 +159,6 @@ $topProductos = $ventaModel->topProductos(5);
             </div>
         </div>
     </div>
-
-    </div>
-
-    <!-- TOP PRODUCTOS + ÚLTIMOS MOVIMIENTOS -->
-    <div class="row g-4 mb-4">
-
-        <div class="col-md-6">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-dark text-white fw-bold">🏆 Top 5 productos más vendidos</div>
-                <div class="card-body p-0">
-                <table class="table table-sm align-middle mb-0">
-                    <thead class="table-light"><tr><th>#</th><th>Producto</th><th class="text-center">Unidades</th><th class="text-end">Ingresos</th></tr></thead>
-                    <tbody>
-                    <?php foreach ($topProductos as $i => $tp): ?>
-                    <tr>
-                        <td><span class="badge bg-dark"><?= $i+1 ?></span></td>
-                        <td><?= htmlspecialchars($tp['nombre']) ?></td>
-                        <td class="text-center fw-bold"><?= $tp['unidades'] ?></td>
-                        <td class="text-end text-success">$<?= number_format($tp['ingresos'], 0, ',', '.') ?></td>
-                    </tr>
-                    <?php endforeach; ?>
-                    <?php if (empty($topProductos)): ?>
-                    <tr><td colspan="4" class="text-center text-muted py-3">Sin ventas aún</td></tr>
-                    <?php endif; ?>
-                    </tbody>
-                </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-dark text-white fw-bold">🔄 Últimos movimientos de inventario</div>
-                <div class="card-body p-0">
-                <table class="table table-sm align-middle mb-0">
-                    <thead class="table-light"><tr><th>Producto</th><th class="text-center">Tipo</th><th class="text-center">Cant.</th><th>Fecha</th></tr></thead>
-                    <tbody>
-                    <?php foreach ($movimientos as $m): ?>
-                    <tr>
-                        <td class="small"><?= htmlspecialchars($m['nombre_producto']) ?></td>
-                        <td class="text-center">
-                            <span class="badge <?= $m['tipo'] === 'entrada' ? 'bg-success' : 'bg-danger' ?>">
-                                <?= $m['tipo'] === 'entrada' ? '↑' : '↓' ?>
-                            </span>
-                        </td>
-                        <td class="text-center"><?= $m['cantidad'] ?></td>
-                        <td class="small text-muted"><?= date('d/m H:i', strtotime($m['fecha'])) ?></td>
-                    </tr>
-                    <?php endforeach; ?>
-                    <?php if (empty($movimientos)): ?>
-                    <tr><td colspan="4" class="text-center text-muted py-3">Sin movimientos</td></tr>
-                    <?php endif; ?>
-                    </tbody>
-                </table>
-                </div>
-            </div>
-        </div>
 
     </div>
 

@@ -308,19 +308,25 @@ public function eliminarImagen($idImagen) {
 public function obtenerRelacionados($idProducto, $idCategoria = null) {
 
     if ($idCategoria) {
-        $sql = "SELECT * FROM productos 
-                WHERE disponibilidad = 1 
-                AND id_producto != :id 
-                AND id_categoria = :categoria
+        $sql = "SELECT p.*, c.nombre_categoria
+                FROM productos p
+                LEFT JOIN categoria c ON p.id_categoria = c.id_categoria
+                WHERE p.disponibilidad = 1
+                AND   p.stock > 0
+                AND   p.id_producto != :id
+                AND   p.id_categoria = :categoria
                 LIMIT 4";
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(":id", $idProducto);
+        $stmt->bindParam(":id",        $idProducto);
         $stmt->bindParam(":categoria", $idCategoria);
     } else {
-        $sql = "SELECT * FROM productos 
-                WHERE disponibilidad = 1 
-                AND id_producto != :id
+        $sql = "SELECT p.*, c.nombre_categoria
+                FROM productos p
+                LEFT JOIN categoria c ON p.id_categoria = c.id_categoria
+                WHERE p.disponibilidad = 1
+                AND   p.stock > 0
+                AND   p.id_producto != :id
                 LIMIT 4";
 
         $stmt = $this->conn->prepare($sql);

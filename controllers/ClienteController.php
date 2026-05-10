@@ -6,6 +6,8 @@ require_once __DIR__ . '/../models/Favorito.php';
 require_once __DIR__ . '/../models/Devolucion.php';
 require_once __DIR__ . '/../models/Cart.php';
 require_once __DIR__ . '/../models/Product.php';
+require_once __DIR__ . '/../models/Oferta.php';
+require_once __DIR__ . '/../models/User.php';
 
 class ClienteController {
 
@@ -128,5 +130,85 @@ class ClienteController {
         $GLOBALS['itemsCarritoPago'] = $itemsCarritoPago;
         $GLOBALS['totalCarritoPago'] = $totalCarritoPago;
         $vista = 'procesar_pago';
+    }
+
+    // Prepara datos para la vista de ofertas
+    public function ofertas(&$vista) {
+        $ofertaVistaModel   = new Oferta();
+        $productOfertaModel = new Product();
+        $ofertasVista       = $ofertaVistaModel->obtenerActivas();
+
+        foreach ($ofertasVista as &$ov) {
+            $imgs = $productOfertaModel->obtenerImagenes($ov['id_producto']);
+            $ov['imagen'] = $imgs[0]['imagen'] ?? null;
+        }
+        unset($ov);
+
+        $GLOBALS['ofertasVista'] = $ofertasVista;
+        $vista = 'ofertas';
+    }
+
+    // Prepara datos para la vista detalle_producto
+    public function detalleProducto(&$vista) {
+        $productDetalle = new Product();
+        $id_det = (int)($_GET['id'] ?? 0);
+
+        $productoDetalle = $id_det ? $productDetalle->obtenerPorId($id_det) : null;
+        $imagenesDetalle = $id_det ? $productDetalle->obtenerImagenes($id_det) : [];
+        $relacionadosDetalle = $productoDetalle
+            ? $productDetalle->obtenerRelacionados($id_det, $productoDetalle['id_categoria'] ?? null)
+            : [];
+
+        $GLOBALS['productDetalle']      = $productDetalle;
+        $GLOBALS['productoDetalle']     = $productoDetalle;
+        $GLOBALS['imagenesDetalle']     = $imagenesDetalle;
+        $GLOBALS['relacionadosDetalle'] = $relacionadosDetalle;
+        $vista = 'detalle_producto';
+    }
+
+    // Prepara datos para la vista factura
+    public function factura(&$vista, $id_usuario) {
+        if (!isset($_SESSION['usuario'])) {
+            $_SESSION['open_login'] = true;
+            header("Location: index.php"); exit;
+        }
+
+        $id_pedido_fac = (int)($_GET['id'] ?? 0);
+        if (!$id_pedido_fac) {
+            header("Location: index.php?action=mis_pedidos"); exit;
+        }
+
+        $pedidoFacModel = new Pedido();
+        $clienteFac     = $this->clienteModel->obtenerPorUsuario($id_usuario);
+        $id_cli_fac     = $clienteFac['id_cliente'] ?? null;
+        $pedidosFac     = $id_cli_fac ? $pedidoFacModel->obtenerPorCliente($id_cli_fac) : [];
+        $pedidoFac      = null;
+
+        foreach ($pedidosFac as $pf) {
+            if ($pf['id_pedido'] == $id_pedido_fac) {
+                $pedidoFac = $pf;
+                break;
+            }
+        }
+
+        if (!$pedidoFac) {
+            $_SESSION['alert'] = ['icon' => 'error', 'title' => 'No autorizado', 'text' => 'Pedido no encontrado'];
+            header("Location: index.php?action=mis_pedidos"); exit;
+        }
+
+        if (!in_array(strtolower($pedidoFac['estado_pedido']), ['enviado', 'entregado'])) {
+            $_SESSION['alert'] = ['icon' => 'warning', 'title' => 'Factura no disponible', 'text' => 'Solo disponible cuando el pedido ha sido enviado o entregado'];
+            header("Location: index.php?action=mis_pedidos"); exit;
+        }
+
+        $detalleFac = $pedidoFacModel->obtenerDetalle($id_pedido_fac);
+        $userFac    = new User();
+        $usuarioFac = $userFac->findById($_SESSION['usuario']['id']);
+
+        $GLOBALS['pedidoFac']  = $pedidoFac;
+        $GLOBALS['detalleFac'] = $detalleFac;
+        $GLOBALS['clienteFac'] = $clienteFac;
+        $GLOBALS['usuarioFac'] = $usuarioFac;
+        $vista = 'factura';
     }
 }

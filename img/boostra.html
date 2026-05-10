@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Bootstrap -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+
+  <!-- Icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+  >
+
+  <title>Power Net Bootstrap</title>
+
+  <style>
+
+    body{
+      background:#f5f7fb;
+    }
+
+    .navbar-custom{
+      backdrop-filter: blur(10px);
+      background: rgba(255,255,255,.9);
+    }
+
+    .hero{
+      background: linear-gradient(135deg,#0f082f,#241d63,#3d348b);
+      min-height: 720px;
+      position: relative;
+      overflow: hidden;
+      color:white;
+    }
+
+    .hero::before{
+      content:'';
+      width:500px;
+      height:500px;
+      border-radius:50%;
+      background:rgba(255,255,255,.05);
+      position:absolute;
+      right:-100px;
+      top:-100px;
+    }
+
+    .hero-btn{
+      background: linear-gradient(90deg,#7c3aed,#9333ea);
+      border:none;
+      border-radius:50px;
+      padding:16px 38px;
+      color:white;
+      font-weight:700;
+      box-shadow:0 10px 30px rgba(124,58,237,.4);
+    }
+
+    .glass-card{
+      background: rgba(255,255,255,.08);
+      backdrop-filter: blur(20px);
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:40px;
+    }
+
+    .product-card{
+      border:none;
+      border-radius:30px;
+      overflow:hidden;
+      transition:.3s;
+    }
+
+    .product-card:hover{
+      transform:translateY(-10px);
+      box-shadow:0 25px 50px rgba(0,0,0,.1);
+    }
+
+    .product-card img{
+      height:260px;
+      object-fit:cover;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-custom shadow-sm sticky-top py-3">
+
+  <div class="container">
+
+    <a class="navbar-brand fw-black fs-2 text-primary fw-bold" href="#">
+      💡 Power Net
+    </a>
+
+    <!-- SEARCH -->
+    <form class="d-flex w-50">
+
+      <div class="input-group bg-light rounded-pill p-2 shadow-sm">
+
+        <input
+          type="text"
+          class="form-control border-0 bg-transparent"
+          placeholder="Buscar productos..."
+        >
+
+        <button class="btn btn-dark rounded-pill px-4">
+          Buscar
+        </button>
+
+      </div>
+
+    </form>
+
+    <!-- ACTIONS -->
+    <div class="d-flex align-items-center gap-3">
+
+      <button class="btn btn-light rounded-circle position-relative">
+
+        <i class="bi bi-cart3 fs-5"></i>
+
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+          2
+        </span>
+
+      </button>
+
+      <button class="btn btn-primary rounded-pill px-4">
+        Login
+      </button>
+
+    </div>
+
+  </div>
+
+</nav>
+
+<!-- MENU -->
+<div class="bg-white border-top border-bottom py-3 shadow-sm">
+
+  <div class="container d-flex justify-content-center gap-5 fw-semibold">
+
+    <a href="#" class="text-decoration-none text-dark">
+      Inicio
+    </a>
+
+    <a href="#" class="text-decoration-none text-dark">
+      Categorías
+    </a>
+
+    <a href="#" class="text-decoration-none text-dark">
+      Ofertas
+    </a>
+
+    <a href="#" class="text-decoration-none text-dark">
+      Más vendidos
+    </a>
+
+    <a href="#" class="text-decoration-none text-dark">
+      Mis pedidos
+    </a>
+
+  </div>
+
+</div>
+
+<!-- HERO -->
+<section class="hero d-flex align-items-center">
+
+  <div class="container">
+
+    <div class="row align-items-center g-5">
+
+      <!-- TEXT -->
+      <div class="col-lg-6">
+
+        <p class="text-uppercase text-info fw-bold letter-spacing">
+          Tecnología para tu hogar y negocio
+        </p>
+
+        <h1 class="display-1 fw-black fw-bold mt-4">
+          Los mejores productos
+          al mejor precio
+        </h1>
+
+        <p class="lead text-light opacity-75 mt-4">
+          Encuentra laptops, accesorios y tecnología premium
+          con descuentos increíbles.
+        </p>
+
+        <div class="d-flex gap-3 mt-5">
+
+          <button class="hero-btn">
+            Ver catálogo
+          </button>
+
+          <button class="btn btn-outline-light rounded-pill px-5">
+            Ofertas
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- IMAGE -->
+      <div class="col-lg-6">
+
+        <div class="glass-card p-4 shadow-lg">
+
+          <img
+            src="https://images.unsplash.com/photo-1517336714739-489689fd1ca8?q=80&w=1200&auto=format&fit=crop"
+            class="img-fluid rounded-5"
+          >
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- PRODUCTS -->
+<section class="container py-5">
+
+  <div class="d-flex justify-content-between align-items-center mb-5">
+
+    <div>
+
+      <p class="text-uppercase text-primary fw-bold">
+        Catálogo
+      </p>
+
+      <h2 class="display-5 fw-bold">
+        Productos destacados
+      </h2>
+
+    </div>
+
+    <!-- FILTERS -->
+    <div class="d-flex gap-2">
+
+      <input class="form-control rounded-pill" placeholder="Buscar...">
+
+      <input class="form-control rounded-pill" placeholder="$ Min">
+
+      <input class="form-control rounded-pill" placeholder="$ Máx">
+
+      <button class="btn btn-dark rounded-pill px-4">
+        Filtrar
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- GRID -->
+  <div class="row g-4">
+
+    <!-- CARD -->
+    <div class="col-md-6 col-lg-3">
+
+      <div class="card product-card shadow-sm">
+
+        <img
+          src="https://images.unsplash.com/photo-1541807084-5c52b6b3adef?q=80&w=1200&auto=format&fit=crop"
+          class="card-img-top"
+        >
+
+        <div class="card-body p-4">
+
+          <small class="text-secondary">
+            Accesorios
+          </small>
+
+          <h4 class="fw-bold mt-2">
+            Mouse RGB Pro
+          </h4>
+
+          <div class="d-flex justify-content-between align-items-center mt-4">
+
+            <div>
+
+              <small class="text-decoration-line-through text-secondary">
+                $89
+              </small>
+
+              <h3 class="fw-bold text-primary">
+                $59
+              </h3>
+
+            </div>
+
+            <button class="btn btn-primary rounded-pill">
+              Comprar
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+</body>
+</html>

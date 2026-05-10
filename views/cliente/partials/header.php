@@ -1,33 +1,35 @@
-<header class="bg-white shadow-sm mb-4">
+<header class="mb-6">
 
     <!-- HEADER SUPERIOR -->
-    <div class="container-fluid py-3 position-relative">
+    <div class="bg-slate-950">
+    <div class="mx-auto flex w-full max-w-[1280px] items-center gap-4 px-3 py-3 md:px-6">
 
-        <!-- LOGO FIJO A LA IZQUIERDA -->
+        <!-- LOGO -->
         <a href="index.php"
-           class="position-absolute start-0 ms-4 d-flex align-items-center text-decoration-none">
+           class="flex items-center gap-3 text-decoration-none">
 
             <img src="/power-net/img/OIP (1).webp"
-                 style="width:40px; height:40px; object-fit:cover;"
-                 class="me-2">
+                 style="width:44px; height:44px; object-fit:cover;"
+                 class="rounded-xl ring-1 ring-white/20">
 
-            <span class="fw-bold fs-4 text-primary">
-                Power Net
-            </span>
+            <div class="leading-tight">
+                <span class="block text-[28px] font-black tracking-tight text-white">Power<span class="text-amber-400">Net</span></span>
+                <span class="block text-xs text-slate-300">Electricidad</span>
+            </div>
         </a>
 
-        <!-- BUSCADOR CENTRADO -->
-        <form method="GET" action="index.php" class="mx-auto" style="max-width:600px;position:relative;" id="form-buscar">
+        <!-- BUSCADOR -->
+        <form method="GET" action="index.php" class="relative mx-auto hidden w-full max-w-[640px] md:block" id="form-buscar">
             <input type="text"
                    name="buscar"
                    id="input-buscar"
-                   placeholder="🔍  Buscar productos..."
+                   placeholder="Buscar productos..."
                    value="<?= htmlspecialchars($_GET['buscar'] ?? '') ?>"
-                   class="form-control"
+                   class="h-11 w-full rounded-xl border border-slate-700 bg-white px-4 pr-28 text-sm text-slate-800 outline-none ring-0 transition focus:border-amber-400 focus:ring-4 focus:ring-amber-200/70"
                    autocomplete="off"
-                   style="border-radius:50px;padding:10px 48px 10px 20px;border:2px solid #e5e7eb;font-size:14px;">
+            >
             <button type="submit"
-                    style="position:absolute;right:6px;top:50%;transform:translateY(-50%);border:none;background:#1a1a2e;color:#fff;border-radius:50px;padding:5px 16px;font-size:13px;font-weight:700;cursor:pointer;">
+                    class="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-lg bg-amber-400 px-5 py-2 text-xs font-black uppercase tracking-wide text-slate-900 transition hover:bg-amber-300">
                 Buscar
             </button>
         </form>
@@ -52,22 +54,22 @@
         })();
         </script>
 
-        <!-- 🛒 CARRITO ARRIBA A LA DERECHA -->
+        <!-- CARRITO -->
         <a href="index.php?action=carrito"
-           class="position-absolute end-0 me-5 text-dark text-decoration-none"
-           style="top:18px;">
+           class="relative ms-auto rounded-xl bg-slate-900/80 px-3 py-2 text-decoration-none text-white ring-1 ring-white/10 transition hover:bg-slate-800 md:ms-0">
 
-            <span style="font-size:26px;">🛒</span>
+            <span style="font-size:22px;">🛒</span>
 
             <?php if (!empty($_SESSION['carrito'])): ?>
                 <span style="
                     position:absolute;
-                    top:-6px;
-                    right:-10px;
-                    background:red;
-                    color:white;
-                    font-size:12px;
-                    padding:2px 6px;
+                    top:-8px;
+                    right:-8px;
+                    background:#fb7185;
+                    color:#fff;
+                    font-size:11px;
+                    font-weight:700;
+                    padding:2px 7px;
                     border-radius:50%;
                 ">
                     <?= array_sum($_SESSION['carrito']) ?>
@@ -77,12 +79,16 @@
         </a>
 
     </div>
+    </div>
 
     <!-- MENÚ -->
-    <nav class="border-top">
-        <div class="container d-flex justify-content-between align-items-center py-3">
+    <nav class="relative z-40 overflow-visible border-b border-slate-200 bg-white/90 backdrop-blur">
+        <div class="mx-auto flex w-full max-w-[1280px] items-center justify-between gap-2 px-3 py-3 text-sm font-semibold text-slate-700 md:px-6">
 
-            <a href="index.php" class="text-dark text-decoration-none">Inicio</a>
+            <div class="hidden w-[140px] md:block"></div>
+            <div class="flex flex-1 flex-wrap items-center justify-center gap-1 text-[15px]">
+            <a href="index.php" class="rounded-lg px-4 py-2 text-decoration-none transition hover:bg-brand-50 hover:text-brand-700">Inicio</a>
+            <span class="mx-1 hidden h-5 w-px bg-slate-200 md:inline-block"></span>
 
             <!-- DROPDOWN CATEGORÍAS -->
             <?php
@@ -91,14 +97,14 @@
             $catMenu = new Category();
             $listaCats = $catMenu->obtenerActivas();
             ?>
-            <div class="dropdown">
+            <div class="dropdown position-relative">
                 <a href="#"
-                   class="text-dark text-decoration-none dropdown-toggle"
+                   class="rounded-lg px-4 py-2 text-decoration-none text-slate-700 dropdown-toggle transition hover:bg-brand-50 hover:text-brand-700"
                    data-bs-toggle="dropdown"
                    aria-expanded="false">
-                    Categorías
+                    Categorias
                 </a>
-                <ul class="dropdown-menu shadow border-0 mt-2" style="min-width:200px;border-radius:12px;overflow:hidden;">
+                <ul class="dropdown-menu mt-2 overflow-hidden border-0 shadow-xl" style="min-width:220px;border-radius:14px;left:50%;transform:translateX(-50%);z-index:70;">
                     <li>
                         <a class="dropdown-item py-2 fw-semibold" href="index.php">
                             📦 Todas las categorías
@@ -120,20 +126,24 @@
                 </ul>
             </div>
 
-            <a href="index.php?action=ofertas" class="text-dark text-decoration-none">Ofertas</a>
-            <a href="index.php?action=mis_pedidos" class="text-dark text-decoration-none">Mis Pedidos</a>
+            <span class="mx-1 hidden h-5 w-px bg-slate-200 md:inline-block"></span>
+            <a href="index.php?action=ofertas" class="rounded-lg px-4 py-2 text-decoration-none text-slate-700 transition hover:bg-brand-50 hover:text-brand-700">Ofertas</a>
+            <span class="mx-1 hidden h-5 w-px bg-slate-200 md:inline-block"></span>
+            <a href="index.php?action=mis_pedidos" class="rounded-lg px-4 py-2 text-decoration-none text-slate-700 transition hover:bg-brand-50 hover:text-brand-700">Mis Pedidos</a>
+            </div>
 
+            <div class="flex w-[140px] justify-end">
             <?php if (isset($_SESSION['usuario'])): ?>
 
                 <div class="dropdown">
-                    <button class="btn btn-outline-primary dropdown-toggle"
+                    <button class="btn dropdown-toggle rounded-xl border-slate-300 px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"
                             type="button"
                             data-bs-toggle="dropdown"
                             aria-expanded="false">
                         👤 Mi cuenta
                     </button>
 
-                    <ul class="dropdown-menu dropdown-menu-end">
+                    <ul class="dropdown-menu dropdown-menu-end rounded-xl border-0 p-2 shadow-xl">
                         <li><a class="dropdown-item" href="index.php?action=mi_perfil">Mi perfil</a></li>
                         <li><a class="dropdown-item" href="index.php?action=carrito">🛒 Mi carrito</a></li>
                         <li><a class="dropdown-item" href="index.php?action=mis_pedidos">📦 Mis pedidos</a></li>
@@ -146,6 +156,7 @@
                 </div>
 
             <?php endif; ?>
+            </div>
 
         </div>
     </nav>
@@ -341,7 +352,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <button class="asi-send" onclick="enviarMensaje()">➤</button>
     </div>
 </div>
-
+<!--  asistente de ia -->
 <script>
 (function() {
 

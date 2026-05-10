@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 // Variables disponibles desde index.php:
 // $productos, $product, $categorias, $filtroCategoria, $filtroBuscar,
 // $filtroOrden, $filtroPrecioMin, $filtroPrecioMax, $filtroOfertas, $favoritoIds
@@ -15,22 +15,38 @@ $categorias      = $categorias      ?? [];
 $productos       = $productos       ?? [];
 ?>
 
-<!-- HERO BANNER -->
-<div class="hero-banner">
-    <div class="hero-content">
-        <p class="hero-sub">Tecnología para tu hogar y negocio</p>
-        <h1 class="hero-title">Los mejores productos<br>al mejor precio</h1>
-        <a href="#productos" class="btn-hero">Ver catálogo</a>
+<!-- HERO -->
+<section class="mb-8 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-900/5">
+    <div class="grid items-center gap-6 p-5 md:grid-cols-2 md:p-10">
+        <div>
+            <span class="mb-3 inline-flex rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-800">Productos profesionales</span>
+            <h1 class="mb-4 text-4xl font-black leading-tight text-slate-900 md:text-6xl">Todo para tu hogar.</h1>
+            <p class="mb-6 max-w-xl text-base text-slate-600 md:text-lg">Bombillos, cables,materiales eléctricos con el respaldo de PowerNet.</p>
+            <div class="flex flex-wrap gap-3">
+                <a href="#productos" class="rounded-xl bg-amber-400 px-6 py-3 text-sm font-black text-slate-900 text-decoration-none transition hover:bg-amber-300">Ver catálogo</a>
+                <a href="index.php?action=ofertas" class="rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-bold text-slate-700 text-decoration-none transition hover:border-brand-300 hover:text-brand-700">Ofertas</a>
+            </div>
+        </div>
+        <div class="relative">
+            <img
+                src="../../img/ia.png"
+                alt="Trabajadores en construcción"
+                class="h-[260px] w-full rounded-3xl object-cover shadow-lg md:h-[340px]"
+            >
+            <div class="absolute -bottom-3 -left-3 rounded-2xl bg-white/95 px-4 py-2 text-xs font-semibold text-slate-600 shadow-md ring-1 ring-slate-200">
+                <?= count($productos) ?> productos en catálogo
+            </div>
+        </div>
     </div>
-</div>
+</section>
 
 <!-- PRODUCTOS -->
-<div class="container-xl py-5" id="productos">
+<div class="container-xl py-2 md:py-4" id="productos">
 <div class="row g-4">
 <div class="col-12">
 
     <!-- Barra de filtros -->
-    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
+    <div class="mb-5 flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm md:flex-row md:items-center md:justify-between">
         <div class="section-header" style="flex:1;">
             <h2 class="section-title">
                 <?php if (!empty($filtroOfertas)): ?>
@@ -48,33 +64,33 @@ $productos       = $productos       ?? [];
                 <?php endif; ?>
             </h2>
             <span class="section-line"></span>
-            <span class="text-muted ms-2" style="font-size:13px;white-space:nowrap;">
+            <span class="ms-2 whitespace-nowrap text-xs text-slate-500">
                 <?= count($productos) ?> <?= count($productos) === 1 ? 'resultado' : 'resultados' ?>
             </span>
         </div>
 
-        <form method="GET" action="index.php" class="d-flex align-items-center gap-2 flex-wrap">
+        <form method="GET" action="index.php" class="flex flex-wrap items-center gap-2">
             <?php if (!empty($filtroCategoria)): ?>
                 <input type="hidden" name="categoria" value="<?= htmlspecialchars($filtroCategoria) ?>">
             <?php endif; ?>
-            <input type="text" name="buscar" class="form-control form-control-sm"
-                   style="width:180px;border-radius:20px;" placeholder="Buscar..."
+            <input type="text" name="buscar" class="h-9 rounded-lg border border-slate-300 bg-white px-3 text-xs outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-100"
+                   style="width:180px;" placeholder="Buscar..."
                    value="<?= htmlspecialchars($filtroBuscar ?? '') ?>">
-            <input type="number" name="precio_min" class="form-control form-control-sm"
-                   style="width:100px;border-radius:20px;" placeholder="$ Mín"
+            <input type="number" name="precio_min" class="h-9 rounded-lg border border-slate-300 bg-white px-3 text-xs outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-100"
+                   style="width:100px;" placeholder="$ Mín"
                    value="<?= htmlspecialchars($filtroPrecioMin ?? '') ?>">
-            <input type="number" name="precio_max" class="form-control form-control-sm"
-                   style="width:100px;border-radius:20px;" placeholder="$ Máx"
+            <input type="number" name="precio_max" class="h-9 rounded-lg border border-slate-300 bg-white px-3 text-xs outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-100"
+                   style="width:100px;" placeholder="$ Máx"
                    value="<?= htmlspecialchars($filtroPrecioMax ?? '') ?>">
-            <select name="orden" class="form-select form-select-sm" style="width:160px;border-radius:20px;">
+            <select name="orden" class="h-9 rounded-lg border border-slate-300 bg-white px-3 text-xs outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-100" style="width:160px;">
                 <option value="nuevo"       <?= ($filtroOrden === 'nuevo'       || !$filtroOrden) ? 'selected' : '' ?>>🆕 Más recientes</option>
                 <option value="precio_asc"  <?= ($filtroOrden === 'precio_asc')  ? 'selected' : '' ?>>💲 Menor precio</option>
                 <option value="precio_desc" <?= ($filtroOrden === 'precio_desc') ? 'selected' : '' ?>>💲 Mayor precio</option>
                 <option value="nombre_asc"  <?= ($filtroOrden === 'nombre_asc')  ? 'selected' : '' ?>>🔤 A → Z</option>
             </select>
-            <button type="submit" class="btn btn-sm btn-dark" style="border-radius:20px;padding:6px 16px;">Filtrar</button>
+            <button type="submit" class="h-9 rounded-lg bg-slate-900 px-4 text-xs font-bold text-white transition hover:bg-brand-700">Filtrar</button>
             <?php if ($filtroCategoria || $filtroBuscar || $filtroPrecioMin || $filtroPrecioMax || $filtroOrden): ?>
-                <a href="index.php" class="btn btn-sm btn-outline-secondary" style="border-radius:20px;">✕ Limpiar</a>
+                <a href="index.php" class="inline-flex h-9 items-center rounded-lg border border-slate-300 px-3 text-xs font-semibold text-slate-600 text-decoration-none transition hover:border-slate-400 hover:text-slate-800">✕ Limpiar</a>
             <?php endif; ?>
         </form>
     </div>

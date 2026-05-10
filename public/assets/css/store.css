@@ -1,0 +1,453 @@
+/* =========================================
+   POWER NET — ESTILOS TIENDA CLIENTE
+========================================= */
+
+/* =========================
+   BASE
+========================= */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at top, #ede9fe 0%, #f8fafc 34%, #ecfeff 100%);
+    color: #1a1a2e;
+    min-height: 100vh;
+}
+
+.app-shell {
+    width: 100%;
+    margin-inline: 0;
+}
+
+.content-shell {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 0;
+    box-shadow: none;
+    padding: clamp(14px, 2vw, 24px);
+}
+main.flex-grow-1 {
+    position: relative;
+}
+
+main.flex-grow-1::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 10% 15%, rgba(124,58,237,0.10), transparent 36%),
+        radial-gradient(circle at 88% 8%, rgba(59,130,246,0.10), transparent 32%);
+    border-radius: 30px;
+    z-index: -1;
+}
+
+/* =========================
+   HERO BANNER
+========================= */
+.hero-banner {
+    background: linear-gradient(135deg, #1e1b4b, #581c87, #0f172a);
+    min-height: 320px;
+    display: flex;
+    align-items: center;
+    padding: 60px 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-banner::after {
+    content: '';
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 50%;
+    right: -100px;
+    top: -150px;
+}
+
+.hero-content {
+    max-width: 600px;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-sub {
+    color: #a78bfa;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.hero-title {
+    color: #fff;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 24px;
+}
+
+.btn-hero {
+    display: inline-block;
+    background: #7c3aed;
+    color: #fff;
+    padding: 14px 32px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 15px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.btn-hero:hover {
+    background: transparent;
+    border-color: #7c3aed;
+    color: #a78bfa;
+}
+
+/* =========================
+   SECTION HEADER
+========================= */
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.section-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #1a1a2e;
+    white-space: nowrap;
+    margin: 0;
+}
+
+.section-line {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(to right, #7c3aed33, transparent);
+    border-radius: 2px;
+}
+
+/* =========================
+   PRODUCTS GRID
+========================= */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 24px;
+}
+
+/* =========================
+   PRODUCT CARD
+========================= */
+.pcard {
+    background: #fff;
+    border-radius: 18px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    position: relative;
+}
+
+.pcard:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 32px rgba(124,58,237,0.12);
+}
+
+.pcard__badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(124,58,237,0.9);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    z-index: 2;
+}
+
+.pcard__img-wrap {
+    display: block;
+    width: 100%;
+    height: 200px;
+    background: #f8f8fb;
+    overflow: hidden;
+    position: relative;
+}
+
+.pcard__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.pcard:hover .pcard__img {
+    transform: scale(1.05);
+}
+
+.pcard__agotado-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+.pcard--agotado {
+    opacity: 0.75;
+}
+
+/* =========================
+   PRODUCT BODY
+========================= */
+.pcard__body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 6px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.pcard__name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a1a2e;
+    text-decoration: none;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: color 0.2s ease;
+}
+
+.pcard__name:hover {
+    color: #7c3aed;
+}
+
+.pcard__desc {
+    font-size: 12px;
+    color: #6b7280;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 0;
+}
+
+.pcard__price {
+    font-size: 22px;
+    font-weight: 800;
+    color: #6d28d9;
+    margin-top: 4px;
+}
+
+.pcard__stock {
+    font-size: 11px;
+    color: #10b981;
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+/* =========================
+   QUANTITY
+========================= */
+.pcard__qty {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f3f4f6;
+    border-radius: 10px;
+    padding: 4px 8px;
+    width: fit-content;
+    margin-top: 4px;
+}
+
+.pcard__qty-btn {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: #fff;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.15s;
+    line-height: 1;
+}
+
+.pcard__qty-btn:hover {
+    background: #7c3aed;
+    color: #fff;
+}
+
+.pcard__qty-input {
+    width: 32px;
+    text-align: center;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a1a2e;
+}
+
+/* =========================
+   ACTIONS
+========================= */
+.pcard__actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.pcard__btn {
+    flex: 1;
+    padding: 10px 0;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pcard__btn--buy {
+    background: #1a1a2e;
+    color: #fff;
+}
+
+.pcard__btn--buy:hover {
+    background: #7c3aed;
+    color: #fff;
+}
+
+.pcard__btn--cart {
+    background: #f3f4f6;
+    color: #1a1a2e;
+    flex: 0 0 44px;
+    font-size: 18px;
+}
+
+.pcard__btn--cart:hover {
+    background: #7c3aed;
+    color: #fff;
+}
+
+.pcard__btn--disabled {
+    background: #e5e7eb;
+    color: #9ca3af;
+    cursor: not-allowed;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    width: 100%;
+}
+
+/* =========================
+   FAVORITO
+========================= */
+.btn-favorito {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.92);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 25px rgba(15,23,42,0.16);
+    transition: all .2s;
+    z-index: 3;
+    padding: 0;
+}
+
+.btn-favorito .corazon {
+    font-size: 20px;
+    line-height: 1;
+    color: #d1d5db;
+    transition: all .2s;
+}
+
+.btn-favorito.activo .corazon {
+    color: #db2777;
+}
+
+.btn-favorito:hover {
+    transform: scale(1.15);
+    box-shadow: 0 6px 16px rgba(219,39,119,0.28);
+}
+
+.btn-favorito:hover .corazon {
+    color: #db2777;
+}
+
+.btn-favorito.activo {
+    background: #fdf2f8;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 576px) {
+    .app-shell {
+        width: 100%;
+    }
+
+    .content-shell {
+        border-radius: 0;
+        padding: 12px;
+    }
+
+    .hero-banner {
+        padding: 40px 20px;
+        min-height: 220px;
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .pcard__img-wrap {
+        height: 150px;
+    }
+
+    .pcard__price {
+        font-size: 18px;
+    }
+}

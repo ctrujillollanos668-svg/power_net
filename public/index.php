@@ -139,7 +139,7 @@ if ($vista === 'carrito') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Power Net</title>
+    <title>power Net</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -171,13 +171,13 @@ if ($vista === 'carrito') {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/power-net2/public/assets/css/store.css" rel="stylesheet">
+    <link href="/power-net/public/assets/css/store.css" rel="stylesheet">
 </head>
 <body class="d-flex flex-column min-vh-100 text-slate-900 antialiased selection:bg-brand-200 selection:text-brand-800" <?= isset($_SESSION['usuario']) ? 'data-logueado="1"' : '' ?>>
     
 
 <!-- 🔥 HEADER -->
-<?php include __DIR__ . '/../views/cliente/partials/header.php'; ?>
+<?php include __DIR__ . '/../views/cliente/partials/header.php';?>
 
 <main class="flex-grow-1 py-4 md:py-8 app-shell">
 <div class="content-shell ring-1 ring-white/70 shadow-2xl shadow-slate-900/5">
@@ -301,7 +301,7 @@ if ($vista === 'carrito') {
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/power-net2/public/assets/js/store.js"></script>
+<script src="/power-net/public/assets/js/store.js"></script>
 
 <?php if (!empty($_SESSION['open_login'])): ?>
 <script>

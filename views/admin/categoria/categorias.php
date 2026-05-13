@@ -129,6 +129,12 @@ $categorias = $category->obtenerTodas();
         <i class="bi bi-pencil"></i>
     </button>
 
+    <!-- ELIMINAR -->
+    <button type="button" class="btn btn-sm btn-outline-danger"
+        onclick="confirmarEliminar('/power-net/public/index.php?action=eliminar_categoria&id=<?= $c['id_categoria'] ?>')">
+        <i class="bi bi-trash"></i>
+    </button>
+
 </div>
 
 </td>
@@ -250,6 +256,21 @@ document.getElementById("buscarCategoria").addEventListener("keyup", function() 
         fila.style.display = texto.includes(filtro) ? "" : "none";
     });
 });
+
+function confirmarEliminar(url) {
+    Swal.fire({
+        title: '¿Eliminar categoría?',
+        text: 'Esta acción no se puede deshacer.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then(result => {
+        if (result.isConfirmed) window.location.href = url;
+    });
+}
 </script>
 </body>
 </html>

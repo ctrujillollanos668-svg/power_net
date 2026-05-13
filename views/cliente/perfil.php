@@ -508,7 +508,15 @@ function abrirEditarMetodo(id, tipo, numero, titular) {
     document.getElementById('pedit_tipo').value    = tipo;
     document.getElementById('pedit_numero').value  = numero;
     document.getElementById('pedit_titular').value = titular;
-    new bootstrap.Modal(document.getElementById('modalEditarMetodoPerfil')).show();
+
+    const modalEl = document.getElementById('modalEditarMetodoPerfil');
+    document.body.appendChild(modalEl);
+    const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+    modalEl.addEventListener('shown.bs.modal', function handler() {
+        document.getElementById('pedit_numero').focus();
+        modalEl.removeEventListener('shown.bs.modal', handler);
+    });
+    modal.show();
 }
 
 function confirmarEliminarMetodo(id) {
@@ -535,8 +543,15 @@ function confirmarEliminarDirPerfil() {
 
 // Abre el modal de edición con la dirección actual prellenada
 function abrirEditarDirPerfil(dir) {
+    const modalEl = document.getElementById('modalEditarDirPerfil');
     document.getElementById('modal_dir_actual').value = dir;
-    new bootstrap.Modal(document.getElementById('modalEditarDirPerfil')).show();
+    document.body.appendChild(modalEl);
+    const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+    modalEl.addEventListener('shown.bs.modal', function handler() {
+        document.getElementById('modal_dir_actual').focus();
+        modalEl.removeEventListener('shown.bs.modal', handler);
+    });
+    modal.show();
 }
 // Fuerza de contraseña
 function medirFuerza(val) {

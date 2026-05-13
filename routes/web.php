@@ -76,6 +76,10 @@ switch ($action) {
         $categoryController->toggle();
         break;
 
+    case 'eliminar_categoria':
+        $categoryController->eliminar();
+        break;
+
     // =========================
     // USUARIO ROL
     // =========================
@@ -269,3 +273,5 @@ switch ($action) {
         break;
 }
 }
+
+ 

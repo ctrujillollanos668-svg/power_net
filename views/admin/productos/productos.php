@@ -162,7 +162,7 @@ if ($ofertaActiva):
         <a href="/power-net/public/index.php?action=desactivar_oferta&id=<?= $ofertaActiva['id_oferta'] ?>"
            class="btn btn-xs btn-outline-danger mt-1"
            style="font-size:11px;padding:1px 6px;"
-           onclick="return confirm('¿Desactivar esta oferta?')">
+           onclick="event.preventDefault(); confirmarDesactivarOferta(this.href)">
            Desactivar
         </a>
     </div>
@@ -503,6 +503,23 @@ document.getElementById('modalEliminar').addEventListener('show.bs.modal', funct
     }
 
 });
+
+function confirmarDesactivarOferta(url) {
+    Swal.fire({
+        title: '¿Desactivar esta oferta?',
+        text: 'La oferta dejará de mostrarse a los clientes.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Sí, desactivar',
+        cancelButtonText: 'Cancelar'
+    }).then(result => {
+        if (result.isConfirmed) {
+            window.location.href = url;
+        }
+    });
+}
 </script>
 
 <!-- ================= MODAL OFERTA ================= -->

@@ -39,6 +39,26 @@ class Category {
         return $stmt->execute([$nombre, $descripcion, $id]);
     }
 
+    public function eliminar($id) {
+        $sql = "SELECT COUNT(*) FROM productos WHERE id_categoria = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$id]);
+        $total = (int)$stmt->fetchColumn();
+
+        if ($total > 0) {
+            return [
+                'bloqueado' => true,
+                'mensaje'   => "No se puede eliminar esta categoría porque tiene {$total} producto(s) asignado(s)."
+            ];
+        }
+
+        $sql = "DELETE FROM " . $this->table . " WHERE id_categoria = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$id]);
+
+        return ['bloqueado' => false];
+    }
+
  // 🔁 CAMBIAR ESTADO
 public function toggle($id) {
     $sql = "UPDATE categoria 

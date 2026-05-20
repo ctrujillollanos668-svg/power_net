@@ -1,7 +1,6 @@
 <?php
-session_start();
 if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] != 1) {
-    header("Location: /power-net/public/index.php"); exit;
+    header("Location: index.php"); exit;
 }
 require_once __DIR__ . '/../../../models/Devolucion.php';
 
@@ -157,7 +156,7 @@ $montoTotal = array_sum(array_column($devoluciones, 'monto_devolucion'));
         </div>
         <div class="d-flex gap-2 align-self-end">
             <button type="submit" class="btn btn-dark btn-sm px-4" style="border-radius:10px;">🔍 Filtrar</button>
-            <a href="/power-net/views/admin/pago/devolucion.php" class="btn btn-outline-secondary btn-sm" style="border-radius:10px;">✕ Limpiar</a>
+            <a href="index.php?action=devoluciones" class="btn btn-outline-secondary btn-sm" style="border-radius:10px;">✕ Limpiar</a>
         </div>
     </form>
     </div>
@@ -311,7 +310,7 @@ $montoTotal = array_sum(array_column($devoluciones, 'monto_devolucion'));
 <div class="modal fade" id="modalRechazar" tabindex="-1">
 <div class="modal-dialog modal-dialog-centered">
 <div class="modal-content border-0 shadow-lg" style="border-radius:18px;overflow:hidden;">
-<form method="POST" action="/power-net/public/index.php?action=rechazar_devolucion">
+<form method="POST" action="index.php?action=rechazar_devolucion">
 <div class="modal-header border-0" style="background:#dc2626;color:#fff;padding:20px 24px;">
     <h5 class="modal-title fw-bold">❌ Rechazar Devolución</h5>
     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -355,7 +354,7 @@ function confirmarAprobar(id, idPedido) {
     }).then(r => {
         if (r.isConfirmed) {
             Swal.fire({ title: 'Procesando...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-            window.location.href = `/power-net/public/index.php?action=aprobar_devolucion&id=${id}`;
+            window.location.href = `index.php?action=aprobar_devolucion&id=${id}`;
         }
     });
 }
@@ -382,7 +381,7 @@ function confirmarReembolso(id, monto) {
     }).then(r => {
         if (r.isConfirmed) {
             Swal.fire({ title: 'Procesando reembolso...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-            window.location.href = `/power-net/public/index.php?action=reembolso_devolucion&id=${id}`;
+            window.location.href = `index.php?action=reembolso_devolucion&id=${id}`;
         }
     });
 }

@@ -1,3 +1,4 @@
+
 <?php
 require_once __DIR__ . '/../models/Order.php';
 require_once __DIR__ . '/../models/Product.php';
@@ -70,7 +71,7 @@ $id_cliente = $cliente['id_cliente'];
         // 🧹 LIMPIAR CARRITO
         unset($_SESSION['carrito']);
 
-        header("Location: /power-net/public/index.php?action=pedidos");
+        header("Location: index.php?action=pedidos");
     }
   public function procesarPago() {
 

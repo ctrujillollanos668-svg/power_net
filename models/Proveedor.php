@@ -11,10 +11,16 @@ class Proveedor {
     }
 
     public function obtenerTodos() {
-        $sql  = "SELECT * FROM proveedor ORDER BY id_proveedor DESC";
+        $sql  = "SELECT * FROM proveedor ORDER BY activo DESC, id_proveedor DESC";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function toggleActivo($id) {
+        $sql  = "UPDATE proveedor SET activo = IF(activo=1,0,1) WHERE id_proveedor = ?";
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute([$id]);
     }
 
     public function obtenerPorId($id) {

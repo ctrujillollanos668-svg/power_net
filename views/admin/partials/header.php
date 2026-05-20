@@ -319,7 +319,7 @@ body {
                 <div class="topbar-role">Administrador</div>
             </div>
         </div>
-        <a href="/power-net/public/index.php?action=logout" class="btn-logout">Salir</a>
+        <a href="index.php?action=logout" class="btn-logout">Salir</a>
     </div>
 </nav>
 

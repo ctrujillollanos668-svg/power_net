@@ -9,7 +9,7 @@ class VentaController {
             (new Venta())->eliminar($id);
             $_SESSION['alert'] = ['icon'=>'success','title'=>'Eliminada','text'=>'Registro de venta eliminado'];
         }
-        header("Location: /power-net/views/admin/pago/ventas.php");
+        header("Location: index.php?action=ventas");
         exit;
     }
 
@@ -22,7 +22,7 @@ class VentaController {
                 $_SESSION['alert'] = ['icon'=>'success','title'=>'Actualizado','text'=>'Estado de venta actualizado'];
             }
         }
-        header("Location: /power-net/views/admin/pago/ventas.php");
+        header("Location: index.php?action=ventas");
         exit;
     }
 }

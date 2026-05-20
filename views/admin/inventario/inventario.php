@@ -1,7 +1,6 @@
 <?php
-session_start();
 if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] != 1) {
-    header("Location: /power-net/public/index.php"); exit;
+    header("Location: index.php"); exit;
 }
 require_once __DIR__ . '/../../../models/Inventario.php';
 require_once __DIR__ . '/../../../models/Product.php';
@@ -19,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['agregar_stock'])) {
     if ($id_prod && $cantidad > 0) {
         $invModel->entrada($id_prod, $cantidad, $motivo);
     }
-    header("Location: /power-net/views/admin/inventario/inventario.php"); exit;
+    header("Location: index.php?action=inventario"); exit;
 }
 
 $resumen     = $invModel->resumenStock();

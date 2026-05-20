@@ -18,7 +18,7 @@ class EnvioController {
                 ->execute([(int)$_POST['id_pedido']]);
             $_SESSION['alert'] = ['icon'=>'success','title'=>'Envío registrado','text'=>'El envío fue creado correctamente'];
         }
-        header("Location: /power-net/views/admin/envios/envios.php"); exit;
+        header("Location: index.php?action=envios"); exit;
     }
 
     public function actualizarEstado() {
@@ -35,7 +35,7 @@ class EnvioController {
             }
             $_SESSION['alert'] = ['icon'=>'success','title'=>'Actualizado','text'=>'Estado del envío actualizado'];
         }
-        header("Location: /power-net/views/admin/envios/envios.php"); exit;
+        header("Location: index.php?action=envios"); exit;
     }
 
     public function eliminar() {
@@ -44,6 +44,6 @@ class EnvioController {
             $pdo->prepare("DELETE FROM envio WHERE id_envio = ?")->execute([(int)$_GET['id']]);
             $_SESSION['alert'] = ['icon'=>'success','title'=>'Eliminado','text'=>'Envío eliminado'];
         }
-        header("Location: /power-net/views/admin/envios/envios.php"); exit;
+        header("Location: index.php?action=envios"); exit;
     }
 }

@@ -1,8 +1,6 @@
 <?php
-session_start();
-
 if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] != 1) {
-    header("Location: /power-net/public/index.php");
+    header("Location: index.php");
     exit;
 }
 
@@ -208,7 +206,7 @@ $totalVentas   = $totalesVenta['total_ventas'] ?? 0;
 
                         <td>
                             <a 
-                                href="/power-net/public/index.php?action=cambiar_rol&id=<?= $u['id'] ?>" 
+                                href="index.php?action=cambiar_rol&id=<?= $u['id'] ?>" 
                                 class="btn btn-sm btn-outline-primary"
                             >
                                 <i class="bi bi-arrow-repeat"></i>

@@ -1,107 +1,59 @@
-# Documentacion del Sistema Power Net
+# Power Net — Índice de Documentación
 
-Esta documentacion resume los archivos principales del proyecto para que puedas ubicar rapido que hace cada parte.
+Tienda e-commerce PHP con patrón MVC manual. Dos roles: **admin** y **cliente**.
 
-## 1) Punto de entrada y rutas
+---
 
-- `public/index.php`: Front controller principal. Inicia sesion, instancia controladores, ejecuta rutas y renderiza vistas cliente.
-- `routes/web.php`: Router web central (`dispatchWebRoutes`). Mapea `action` a metodos de controladores.
+## Flujo rápido
 
-## 2) Configuracion
+```
+Navegador → public/index.php → routes/web.php → Controlador → Vista
+```
 
-- `config/Database.php`: Conexion PDO y acceso a base de datos.
+---
 
-## 3) Controladores (capa de casos de uso)
+## Archivos documentados
 
-- `controllers/UsuarioController.php`: Registro, login, logout, perfil y rol.
-- `controllers/ProductController.php`: CRUD de productos e imagenes.
-- `controllers/CategoryController.php`: CRUD de categorias.
-- `controllers/CartController.php`: Operaciones del carrito (agregar, aumentar, disminuir, vaciar).
-- `controllers/ClienteController.php`: Vistas y flujos cliente (perfil, pedidos, favoritos, pagos, factura, ofertas, detalle).
-- `controllers/PagoController.php`: Metodos de pago, direccion y confirmacion de pago.
-- `controllers/DevolucionController.php`: Solicitudes y gestion de devoluciones.
-- `controllers/EnvioController.php`: Gestion de envios y cambios de estado.
-- `controllers/OfertaController.php`: Crear, activar, editar y desactivar ofertas.
-- `controllers/ProveedorController.php`: CRUD de proveedores.
-- `controllers/VentaController.php`: Gestion de ventas y estado.
-- `controllers/OrderController.php`: Guardado de pedidos desde flujo admin.
+### Config y entrada
+| Archivo | Doc |
+|---|---|
+| `config/Database.php` | [config_Database.md](config_Database.md) |
+| `public/index.php` | [public_index.md](public_index.md) |
+| `public/assets/css/store.css` | [assets_store_css.md](assets_store_css.md) |
+| `public/assets/js/store.js` | [assets_store_js.md](assets_store_js.md) |
 
-## 4) Modelos (acceso a datos)
+### Controladores
+| Archivo | Doc |
+|---|---|
+| `controllers/UsuarioController.php` | [controllers_UsuarioController.md](controllers_UsuarioController.md) |
+| `controllers/ProductController.php` | [controllers_ProductController.md](controllers_ProductController.md) |
+| `controllers/CategoryController.php` | [controllers_CategoryController.md](controllers_CategoryController.md) |
+| `controllers/CartController.php` | [controllers_CartController.md](controllers_CartController.md) |
+| `controllers/ClienteController.php` | [controllers_ClienteController.md](controllers_ClienteController.md) |
+| `controllers/PagoController.php` | [controllers_PagoController.md](controllers_PagoController.md) |
+| `controllers/DevolucionController.php` | [controllers_DevolucionController.md](controllers_DevolucionController.md) |
+| `controllers/EnvioController.php` | [controllers_EnvioController.md](controllers_EnvioController.md) |
+| `controllers/OfertaController.php` | [controllers_OfertaController.md](controllers_OfertaController.md) |
+| `controllers/ProveedorController.php` | [controllers_ProveedorController.md](controllers_ProveedorController.md) |
+| `controllers/VentaController.php` | [controllers_VentaController.md](controllers_VentaController.md) |
+| `controllers/OrderController.php` | [controllers_OrderController.md](controllers_OrderController.md) |
 
-- `models/User.php`: Usuarios (consulta por ID y datos de cuenta).
-- `models/Category.php`: Categorias.
-- `models/Pago.php`: Entidad/persistencia de pagos.
-- `models/Cart.php`: Estado del carrito en sesion.
-- `models/Product.php`: Productos, imagenes y relacionados.
-- `models/Venta.php`: Ventas.
-- `models/Cliente.php`: Perfil cliente y direccion.
-- `models/Pedido.php`: Pedidos y detalle de pedido.
-- `models/Oferta.php`: Ofertas activas e historial.
-- `models/MetodoPago.php`: Metodos de pago del cliente.
-- `models/Favorito.php`: Favoritos del cliente.
-- `models/Inventario.php`: Inventario y stock.
-- `models/Proveedor.php`: Proveedores.
-- `models/Devolucion.php`: Devoluciones.
-- `models/Envio.php`: Envios.
-- `models/Order.php`: Operaciones de orden/pedido para backend admin.
-
-## 5) Vistas cliente
-
-- `views/cliente/home.php`: Home, hero, filtros y grid de productos.
-- `views/cliente/detalle_producto.php`: Detalle del producto + relacionados.
-- `views/cliente/carrito.php`: Carrito de compras.
-- `views/cliente/procesar_pago.php`: Checkout/confirmacion de compra.
-- `views/cliente/pago_exitoso.php`: Confirmacion de pago exitoso.
-- `views/cliente/ofertas.php`: Landing de ofertas activas.
-- `views/cliente/factura.php`: Documento de factura (HTML completo para imprimir/PDF).
-- `views/cliente/perfil.php`: Perfil del cliente.
-- `views/cliente/datos_cuenta.php`: Datos de cuenta.
-- `views/cliente/seguridad.php`: Seguridad de cuenta.
-- `views/cliente/medios_pago.php`: Gestion de medios de pago.
-- `views/cliente/mis_pedidos.php`: Historial de pedidos del cliente.
-- `views/cliente/mis_devoluciones.php`: Historial y estado de devoluciones.
-- `views/cliente/mis_favoritos.php`: Lista de productos favoritos.
-- `views/cliente/solicitar_devolucion.php`: Formulario para nueva devolucion.
-- `views/cliente/partials/header.php`: Header, menus, buscador, alertas y asistente virtual.
-- `views/cliente/partials/footer.php`: Footer del sitio.
-
-## 6) Vistas auth
-
-- `views/auth/login.php`: Formulario modal de login/registro.
-- `views/auth/recuperar.php`: Solicitud de recuperacion de contraseña.
-- `views/auth/reset_password.php`: Cambio de contraseña por token.
-
-## 7) Vistas admin
-
-- `views/admin/dashboard.php`: Panel principal admin.
-- `views/admin/productos/productos.php`: Gestion de productos.
-- `views/admin/categoria/categorias.php`: Gestion de categorias.
-- `views/admin/pedidos/pedidos.php`: Gestion de pedidos.
-- `views/admin/ofertas/ofertas.php`: Gestion de ofertas.
-- `views/admin/proveedores/proveedores.php`: Gestion de proveedores.
-- `views/admin/envios/envios.php`: Gestion de envios.
-- `views/admin/inventario/inventario.php`: Gestion de inventario.
-- `views/admin/pago/pago.php`: Gestion de pagos.
-- `views/admin/pago/ventas.php`: Vista de ventas.
-- `views/admin/pago/devolucion.php`: Vista admin de devoluciones.
-- `views/admin/partials/header.php`: Header del modulo admin.
-- `views/admin/partials/sidebar.php`: Sidebar del modulo admin.
-- `views/admin/partials/auth_check.php`: Proteccion de acceso a rutas admin.
-
-## 8) Assets front-end
-
-- `public/assets/css/store.css`: Estilos globales de la tienda cliente.
-- `public/assets/js/store.js`: JS de UI cliente (modales login/recuperar, favoritos y cantidades).
-
-## 9) Base de datos y scripts
-
-- `sql/power_net.sql`: Script principal de estructura/datos de la base.
-- `Scripts/migrar_bd.php`: Script auxiliar para migracion de base de datos.
-
-## 10) Flujo general (resumen rapido)
-
-1. El navegador entra por `public/index.php`.
-2. `index.php` llama `dispatchWebRoutes()` en `routes/web.php`.
-3. El router ejecuta controladores segun `action`.
-4. Los controladores llenan datos (muchas veces en `$GLOBALS`) y seleccionan vista.
-5. `index.php` renderiza la vista cliente o corta flujo para respuestas especiales (ej: factura).
+### Modelos
+| Archivo | Doc |
+|---|---|
+| `models/User.php` | [models_User.md](models_User.md) |
+| `models/Product.php` | [models_Product.md](models_Product.md) |
+| `models/Category.php` | [models_Category.md](models_Category.md) |
+| `models/Cart.php` | [models_Cart.md](models_Cart.md) |
+| `models/Cliente.php` | [models_Cliente.md](models_Cliente.md) |
+| `models/Pedido.php` | [models_Pedido.md](models_Pedido.md) |
+| `models/Order.php` | [models_Order.md](models_Order.md) |
+| `models/Pago.php` | [models_Pago.md](models_Pago.md) |
+| `models/MetodoPago.php` | [models_MetodoPago.md](models_MetodoPago.md) |
+| `models/Oferta.php` | [models_Oferta.md](models_Oferta.md) |
+| `models/Favorito.php` | [models_Favorito.md](models_Favorito.md) |
+| `models/Inventario.php` | [models_Inventario.md](models_Inventario.md) |
+| `models/Devolucion.php` | [models_Devolucion.md](models_Devolucion.md) |
+| `models/Envio.php` | [models_Envio.md](models_Envio.md) |
+| `models/Proveedor.php` | [models_Proveedor.md](models_Proveedor.md) |
+| `models/Venta.php` | [models_Venta.md](models_Venta.md) |

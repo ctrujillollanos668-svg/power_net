@@ -1,7 +1,6 @@
 <?php
-session_start();
 if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] != 1) {
-    header("Location: /power-net/public/index.php"); exit;
+    header("Location: index.php"); exit;
 }
 require_once __DIR__ . '/../../../models/Order.php';
 $order   = new Order();
@@ -42,7 +41,7 @@ if (isset($_GET['cambiar_estado'], $_GET['id'], $_GET['estado'])) {
     }
 
     $_SESSION['alert'] = ['icon'=>'success','title'=>'Estado actualizado','text'=>'El pedido fue marcado como ' . ucfirst($nuevoEst)];
-    header("Location: /power-net/views/admin/pedidos/pedidos.php"); exit;
+    header("Location: index.php?action=pedidos"); exit;
 }
 ?>
 <!DOCTYPE html>
@@ -55,48 +54,191 @@ if (isset($_GET['cambiar_estado'], $_GET['id'], $_GET['estado'])) {
 <style>
 /* ── Estado badges ── */
 .estado-badge {
-    display: inline-flex; align-items: center; gap: 5px;
-    padding: 5px 12px; border-radius: 20px;
-    font-size: 12px; font-weight: 700; letter-spacing: .3px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+
+    padding: 5px 12px;
+    border-radius: 20px;
+
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .3px;
 }
-.estado-pendiente  { background: #fef3c7; color: #92400e; }
-.estado-enviado    { background: #dbeafe; color: #1e40af; }
-.estado-entregado  { background: #d1fae5; color: #065f46; }
-.estado-cancelado  { background: #fee2e2; color: #991b1b; }
+
+.estado-pendiente {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.estado-enviado {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.estado-entregado {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.estado-cancelado {
+    background: #fee2e2;
+    color: #991b1b;
+}
 
 /* ── Botones cambiar estado ── */
 .btn-estado {
-    display: inline-flex; align-items: center; gap: 4px;
-    padding: 4px 12px; border-radius: 20px; font-size: 11px;
-    font-weight: 700; border: 2px solid; cursor: pointer;
-    transition: all .18s; background: transparent; white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+
+    padding: 4px 12px;
+    border-radius: 20px;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    border: 2px solid;
+    cursor: pointer;
+
+    transition: all .18s;
+
+    background: transparent;
+    white-space: nowrap;
 }
-.btn-estado-pendiente  { border-color: #f59e0b; color: #92400e; }
-.btn-estado-pendiente:hover  { background: #f59e0b; color: #fff; }
-.btn-estado-enviado    { border-color: #3b82f6; color: #1e40af; }
-.btn-estado-enviado:hover    { background: #3b82f6; color: #fff; }
-.btn-estado-entregado  { border-color: #10b981; color: #065f46; }
-.btn-estado-entregado:hover  { background: #10b981; color: #fff; }
-.btn-estado-cancelado  { border-color: #ef4444; color: #991b1b; }
-.btn-estado-cancelado:hover  { background: #ef4444; color: #fff; }
+
+.btn-estado-pendiente {
+    border-color: #f59e0b;
+    color: #92400e;
+}
+
+.btn-estado-pendiente:hover {
+    background: #f59e0b;
+    color: #fff;
+}
+
+.btn-estado-enviado {
+    border-color: #3b82f6;
+    color: #1e40af;
+}
+
+.btn-estado-enviado:hover {
+    background: #3b82f6;
+    color: #fff;
+}
+
+.btn-estado-entregado {
+    border-color: #10b981;
+    color: #065f46;
+}
+
+.btn-estado-entregado:hover {
+    background: #10b981;
+    color: #fff;
+}
+
+.btn-estado-cancelado {
+    border-color: #ef4444;
+    color: #991b1b;
+}
+
+.btn-estado-cancelado:hover {
+    background: #ef4444;
+    color: #fff;
+}
 
 /* ── Fila detalle ── */
-.fila-detalle td { background: #f8fafc; border-top: none !important; }
-.detalle-inner { border-radius: 12px; overflow: hidden; border: 1px solid #e5e7eb; }
-.detalle-inner table thead th { background: #1e293b; color: #fff; font-size: 12px; padding: 10px 14px; }
-.detalle-inner table tbody td { font-size: 13px; padding: 10px 14px; }
+.fila-detalle td {
+    background: #f8fafc;
+    border-top: none !important;
+}
+
+.detalle-inner {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+}
+
+.detalle-inner table thead th {
+    background: #1e293b;
+    color: #fff;
+
+    font-size: 12px;
+    padding: 10px 14px;
+}
+
+.detalle-inner table tbody td {
+    font-size: 13px;
+    padding: 10px 14px;
+}
 
 /* ── Métricas ── */
-.metric-card { border-radius: 14px; border: none; box-shadow: 0 2px 10px rgba(0,0,0,.06); transition: transform .2s; }
-.metric-card:hover { transform: translateY(-3px); }
-.metric-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+.metric-card {
+    border-radius: 14px;
+    border: none;
+
+    box-shadow: 0 2px 10px rgba(0,0,0,.06);
+    transition: transform .2s;
+}
+
+.metric-card:hover {
+    transform: translateY(-3px);
+}
+
+.metric-icon {
+    width: 44px;
+    height: 44px;
+
+    border-radius: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 20px;
+}
 
 /* ── Tabla ── */
-#tablaPedidos thead th { font-size: 11px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; }
-#tablaPedidos tbody tr:not(.fila-detalle):hover { background: #f5f3ff; }
-.btn-ver { width: 34px; height: 34px; border-radius: 10px; border: 2px solid #e5e7eb; background: #fff; color: #374151; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: all .18s; }
-.btn-ver:hover { border-color: #7c3aed; color: #7c3aed; background: #faf5ff; }
-.btn-ver.activo { background: #7c3aed; border-color: #7c3aed; color: #fff; }
+#tablaPedidos thead th {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+}
+
+#tablaPedidos tbody tr:not(.fila-detalle):hover {
+    background: #f5f3ff;
+}
+
+.btn-ver {
+    width: 34px;
+    height: 34px;
+
+    border-radius: 10px;
+    border: 2px solid #e5e7eb;
+
+    background: #fff;
+    color: #374151;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+    transition: all .18s;
+}
+
+.btn-ver:hover {
+    border-color: #7c3aed;
+    color: #7c3aed;
+    background: #faf5ff;
+}
+
+.btn-ver.activo {
+    background: #7c3aed;
+    border-color: #7c3aed;
+    color: #fff;
+}
 </style>
 </head>
 <body>

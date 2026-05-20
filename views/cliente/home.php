@@ -27,15 +27,17 @@ $productos       = $productos       ?? [];
                 <a href="index.php?action=ofertas" class="rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-bold text-slate-700 text-decoration-none transition hover:border-brand-300 hover:text-brand-700">Ofertas</a>
             </div>
         </div>
-        <div class="relative">
-            <img
-                src="../../img/ia.png"
-                alt="Trabajadores en construcción"
-                class="h-[260px] w-full rounded-3xl object-cover shadow-lg md:h-[340px]"
-            >
-            <div class="absolute -bottom-3 -left-3 rounded-2xl bg-white/95 px-4 py-2 text-xs font-semibold text-slate-600 shadow-md ring-1 ring-slate-200">
-                <?= count($productos) ?> productos en catálogo
-            </div>
+       <div class="relative">
+    <img
+        src="<?= IMG_URL ?>/ia.png"
+        alt="Trabajadores en construcción"
+        class="h-[260px] w-full rounded-3xl object-cover shadow-lg md:h-[340px]"
+    >
+
+    <div class="absolute -bottom-3 -left-3 rounded-2xl bg-white/95 px-4 py-2 text-xs font-semibold text-slate-600 shadow-md ring-1 ring-slate-200">
+        <?= count($productos) ?> productos en catálogo
+    </div>
+</div>
         </div>
     </div>
 </section>
@@ -117,10 +119,10 @@ $productos       = $productos       ?? [];
 
             <a href="index.php?action=detalle_producto&id=<?= $p['id_producto'] ?>" class="pcard__img-wrap">
                 <?php if ($img): ?>
-                    <img src="/power-net/public/uploads/<?= htmlspecialchars($img) ?>"
+                    <img src="<?= UPLOADS_URL ?>/<?= htmlspecialchars($img) ?>"
                          alt="<?= htmlspecialchars($p['nombre']) ?>" class="pcard__img">
                 <?php else: ?>
-                    <img src="/power-net/img/logo.jpg" alt="Sin imagen" class="pcard__img">
+                    <img src="<?= IMG_URL ?>/logo.jpg" alt="Sin imagen" class="pcard__img">
                 <?php endif; ?>
                 <?php if ($agotado): ?>
                     <div class="pcard__agotado-overlay">Agotado</div>
@@ -195,3 +197,5 @@ $productos       = $productos       ?? [];
 </div>
 </div>
 </div>
+
+

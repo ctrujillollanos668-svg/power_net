@@ -1,7 +1,6 @@
 <?php
-session_start();
 if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] != 1) {
-    header("Location: /power-net/public/index.php"); exit;
+    header("Location: index.php"); exit;
 }
 require_once __DIR__ . '/../../../models/Proveedor.php';
 $provModel   = new Proveedor();
@@ -41,6 +40,7 @@ $proveedores = $provModel->obtenerTodos();
                 <th>Nombre</th>
                 <th>Correo</th>
                 <th>Teléfono</th>
+                <th class="text-center">Estado</th>
                 <th class="text-center">Acciones</th>
             </tr>
         </thead>
@@ -52,7 +52,19 @@ $proveedores = $provModel->obtenerTodos();
             <td><?= htmlspecialchars($p['correo'] ?? '—') ?></td>
             <td><?= htmlspecialchars($p['telefono'] ?? '—') ?></td>
             <td class="text-center">
+                <?php $activo = $p['activo'] ?? 1; ?>
+                <span class="badge <?= $activo ? 'bg-success' : 'bg-secondary' ?>">
+                    <?= $activo ? 'Activo' : 'Inactivo' ?>
+                </span>
+            </td>
+            <td class="text-center">
                 <div class="d-flex gap-2 justify-content-center">
+                    <!-- Toggle activo/inactivo -->
+                    <a href="index.php?action=toggle_proveedor&id=<?= $p['id_proveedor'] ?>"
+                       class="btn btn-sm <?= ($p['activo'] ?? 1) ? 'btn-outline-warning' : 'btn-outline-success' ?>"
+                       title="<?= ($p['activo'] ?? 1) ? 'Desactivar' : 'Activar' ?>">
+                        <i class="bi bi-<?= ($p['activo'] ?? 1) ? 'toggle-on' : 'toggle-off' ?>"></i>
+                    </a>
                     <button class="btn btn-sm btn-outline-primary"
                             data-bs-toggle="modal"
                             data-bs-target="#modalEditar"
@@ -64,7 +76,7 @@ $proveedores = $provModel->obtenerTodos();
                     </button>
                     <a href="#"
                        class="btn btn-sm btn-outline-danger"
-                       onclick="confirmarEliminar('/power-net/public/index.php?action=eliminar_proveedor&id=<?= $p['id_proveedor'] ?>')">
+                       onclick="confirmarEliminar('index.php?action=eliminar_proveedor&id=<?= $p['id_proveedor'] ?>')">
                         <i class="bi bi-trash"></i>
                     </a>
                 </div>
@@ -86,7 +98,7 @@ $proveedores = $provModel->obtenerTodos();
 <div class="modal fade" id="modalNuevo" tabindex="-1">
 <div class="modal-dialog modal-dialog-centered">
 <div class="modal-content border-0 shadow-lg" style="border-radius:16px;overflow:hidden;">
-<form method="POST" action="/power-net/public/index.php?action=guardar_proveedor">
+<form method="POST" action="index.php?action=guardar_proveedor">
 <div class="modal-header bg-dark text-white border-0">
     <h5 class="modal-title fw-bold">🏭 Nuevo Proveedor</h5>
     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -118,7 +130,7 @@ $proveedores = $provModel->obtenerTodos();
 <div class="modal fade" id="modalEditar" tabindex="-1">
 <div class="modal-dialog modal-dialog-centered">
 <div class="modal-content border-0 shadow-lg" style="border-radius:16px;overflow:hidden;">
-<form method="POST" action="/power-net/public/index.php?action=editar_proveedor">
+<form method="POST" action="index.php?action=editar_proveedor">
 <div class="modal-header bg-dark text-white border-0">
     <h5 class="modal-title fw-bold">✏️ Editar Proveedor</h5>
     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>

@@ -357,69 +357,128 @@ $tabActivo = $_GET['tab'] ?? 'datos';
          TAB: MÉTODOS DE PAGO
     ======================== -->
     <?php elseif ($tabActivo === 'metodos'): ?>
+    <?php
+    $metodosConfig  = require __DIR__ . '/../../views/admin/pago/MetodosPago.php';
+    $metodosActivos = array_values(array_filter($metodosConfig, fn($m) => $m['activo']));
+    ?>
     <div class="perfil-section">
         <div class="perfil-section-header">💳 Métodos de pago</div>
         <div class="perfil-section-body">
 
+            <!-- Métodos guardados del cliente -->
             <?php if (!empty($metodosPerfil)): ?>
+                <p style="font-size:13px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;">
+                    Mis métodos guardados
+                </p>
                 <?php foreach ($metodosPerfil as $m): ?>
-                <div class="metodo-card">
+                <div class="metodo-card" style="margin-bottom:10px;">
                     <div class="metodo-card-info">
-                        <span class="metodo-card-icon"><?= $m['tipo'] === 'tarjeta' ? '💳' : '🏦' ?></span>
+                        <span class="metodo-card-icon">💳</span>
                         <div>
                             <div class="metodo-card-tipo"><?= htmlspecialchars($m['tipo']) ?></div>
-                            <div class="metodo-card-num">•••• •••• •••• <?= htmlspecialchars(substr($m['numero'],-4)) ?></div>
+                            <div class="metodo-card-num">•••• <?= htmlspecialchars(substr($m['numero'],-4)) ?></div>
                             <div class="metodo-card-tit"><?= htmlspecialchars($m['titular']) ?></div>
                         </div>
                     </div>
                     <div style="display:flex;gap:8px;">
-                        <button type="button" class="btn-icon btn-icon-edit"
-                                onclick="abrirEditarMetodo(<?= $m['id_metodo'] ?>,'<?= htmlspecialchars($m['tipo'],ENT_QUOTES) ?>','<?= htmlspecialchars($m['numero'],ENT_QUOTES) ?>','<?= htmlspecialchars($m['titular'],ENT_QUOTES) ?>')">
-                            ✏️
-                        </button>
                         <button type="button" class="btn-icon btn-icon-del"
-                                onclick="confirmarEliminarMetodo(<?= $m['id_metodo'] ?>)">
-                            🗑️
-                        </button>
+                                onclick="confirmarEliminarMetodo(<?= $m['id_metodo'] ?>)">🗑️</button>
                     </div>
                 </div>
                 <?php endforeach; ?>
                 <hr class="my-4">
-            <?php else: ?>
-                <div class="dir-vacia mb-4">
-                    <div style="font-size:2rem;margin-bottom:8px;">💳</div>
-                    <p>No tienes métodos de pago guardados.</p>
-                </div>
             <?php endif; ?>
 
-            <!-- Agregar nuevo método -->
-            <h6 class="fw-bold mb-3" style="color:#1a1a2e;">➕ Agregar método</h6>
-            <form method="POST" action="index.php?action=guardar_metodo">
-                <input type="hidden" name="redirect" value="mi_perfil_metodos">
-                <div class="row g-3 mb-3">
-                    <div class="col-md-4">
-                        <label class="p-label">Tipo</label>
-                        <select name="tipo" class="p-input" required>
-                            <option value="tarjeta">💳 Tarjeta</option>
-                            <option value="transferencia">🏦 Transferencia</option>
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="p-label">Número</label>
-                        <input type="text" name="numero" class="p-input"
-                               placeholder="4111 1111 1111 1111" maxlength="19" required>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="p-label">Titular</label>
-                        <input type="text" name="titular" class="p-input"
-                               placeholder="Nombre del titular" required>
-                    </div>
+            <!-- Métodos disponibles del admin para agregar -->
+            <?php if (empty($metodosActivos)): ?>
+                <div class="dir-vacia">
+                    <div style="font-size:2rem;margin-bottom:8px;">💳</div>
+                    <p>No hay métodos de pago disponibles por el momento.</p>
                 </div>
-                <button type="submit" class="p-btn">💾 Guardar método</button>
-            </form>
+            <?php else: ?>
+                <p style="font-size:13px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;">
+                    Selecciona un método para agregar
+                </p>
+                <?php foreach ($metodosActivos as $idx => $m): ?>
+                <div class="metodo-card" style="margin-bottom:10px;cursor:pointer;transition:border-color .2s;"
+                     id="metodo-opcion-<?= $idx ?>"
+                     onclick="seleccionarMetodo(<?= $idx ?>,'<?= htmlspecialchars($m['nombre'],ENT_QUOTES) ?>','<?= htmlspecialchars($m['icono']??'💰',ENT_QUOTES) ?>','<?= htmlspecialchars($m['instrucciones']??'',ENT_QUOTES) ?>')">
+                    <div class="metodo-card-info">
+                        <span class="metodo-card-icon"><?= $m['icono'] ?? '💰' ?></span>
+                        <div>
+                            <div class="metodo-card-tipo"><?= htmlspecialchars($m['nombre']) ?></div>
+                            <?php if (!empty($m['descripcion'])): ?>
+                            <div class="metodo-card-tit"><?= htmlspecialchars($m['descripcion']) ?></div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <span style="font-size:18px;color:#d1d5db;" id="check-<?= $idx ?>">＋</span>
+                </div>
+
+                <!-- Formulario inline que aparece al seleccionar -->
+                <div id="form-metodo-<?= $idx ?>" style="display:none;background:#f5f3ff;border:1.5px solid #c4b5fd;border-radius:12px;padding:18px;margin-bottom:12px;">
+                    <?php if (!empty($m['instrucciones'])): ?>
+                    <div style="font-size:12px;color:#5b21b6;margin-bottom:14px;">
+                        📋 <?= htmlspecialchars($m['instrucciones']) ?>
+                    </div>
+                    <?php endif; ?>
+                    <form method="POST" action="index.php?action=guardar_metodo">
+                        <input type="hidden" name="redirect" value="mi_perfil_metodos">
+                        <input type="hidden" name="tipo" value="<?= htmlspecialchars($m['nombre']) ?>">
+                        <div class="mb-3">
+                            <label class="p-label">Tu número / cuenta</label>
+                            <input type="text" name="numero" class="p-input"
+                                   placeholder="Ej: 300 123 4567" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="p-label">Tu nombre</label>
+                            <input type="text" name="titular" class="p-input"
+                                   placeholder="Nombre completo" required>
+                        </div>
+                        <div style="display:flex;gap:10px;">
+                            <button type="submit" class="p-btn">💾 Guardar</button>
+                            <button type="button" class="p-btn" style="background:#6b7280;"
+                                    onclick="cerrarMetodo(<?= $idx ?>)">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
 
         </div>
     </div>
+
+    <script>
+    function seleccionarMetodo(idx, nombre, icono, instrucciones) {
+        // Cerrar todos los demás
+        document.querySelectorAll('[id^="form-metodo-"]').forEach(f => f.style.display = 'none');
+        document.querySelectorAll('[id^="check-"]').forEach(c => { c.textContent = '＋'; c.style.color = '#d1d5db'; });
+        document.querySelectorAll('[id^="metodo-opcion-"]').forEach(c => c.style.borderColor = '#e5e7eb');
+
+        const form  = document.getElementById('form-metodo-' + idx);
+        const check = document.getElementById('check-' + idx);
+        const card  = document.getElementById('metodo-opcion-' + idx);
+
+        if (form.style.display === 'block') {
+            form.style.display = 'none';
+            check.textContent  = '＋';
+            check.style.color  = '#d1d5db';
+            card.style.borderColor = '#e5e7eb';
+        } else {
+            form.style.display = 'block';
+            check.textContent  = '✓';
+            check.style.color  = '#7c3aed';
+            card.style.borderColor = '#7c3aed';
+            form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+    function cerrarMetodo(idx) {
+        document.getElementById('form-metodo-' + idx).style.display = 'none';
+        document.getElementById('check-' + idx).textContent  = '＋';
+        document.getElementById('check-' + idx).style.color  = '#d1d5db';
+        document.getElementById('metodo-opcion-' + idx).style.borderColor = '#e5e7eb';
+    }
+    </script>
 
     <!-- ========================
          TAB: SEGURIDAD
@@ -508,7 +567,7 @@ function abrirEditarMetodo(id, tipo, numero, titular) {
     document.getElementById('pedit_tipo').value    = tipo;
     document.getElementById('pedit_numero').value  = numero;
     document.getElementById('pedit_titular').value = titular;
-    new bootstrap.Modal(document.getElementById('modalEditarMetodoPerfil')).show();
+    _abrirModal('modalEditarMetodoPerfil');
 }
 
 function confirmarEliminarMetodo(id) {
@@ -533,10 +592,33 @@ function confirmarEliminarDirPerfil() {
     });
 }
 
-// Abre el modal de edición con la dirección actual prellenada
 function abrirEditarDirPerfil(dir) {
     document.getElementById('modal_dir_actual').value = dir;
-    new bootstrap.Modal(document.getElementById('modalEditarDirPerfil')).show();
+    _abrirModal('modalEditarDirPerfil');
+}
+
+function _abrirModal(id) {
+    document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow    = '';
+    document.body.style.paddingRight = '';
+
+    const modalEl = document.getElementById(id);
+    const prev = bootstrap.Modal.getInstance(modalEl);
+    if (prev) prev.dispose();
+
+    if (modalEl.parentElement !== document.body) {
+        document.body.appendChild(modalEl);
+    }
+
+    const modal = new bootstrap.Modal(modalEl, { backdrop: true, keyboard: true, focus: true });
+    modal.show();
+
+    modalEl.addEventListener('shown.bs.modal', function handler() {
+        const primer = modalEl.querySelector('input:not([type=hidden]), select, textarea');
+        if (primer) { primer.focus(); primer.click(); }
+        modalEl.removeEventListener('shown.bs.modal', handler);
+    });
 }
 // Fuerza de contraseña
 function medirFuerza(val) {

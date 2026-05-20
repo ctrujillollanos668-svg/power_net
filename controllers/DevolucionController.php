@@ -101,7 +101,7 @@ class DevolucionController {
             (new Devolucion())->cambiarEstado((int)$_GET['id'], 'aprobada');
             $_SESSION['alert'] = ['icon'=>'success','title'=>'Aprobada','text'=>'Devolución aprobada correctamente'];
         }
-        header("Location: /power-net/views/admin/pago/devolucion.php"); exit;
+        header("Location: index.php?action=devoluciones"); exit;
     }
 
     // Admin: rechazar devolución
@@ -113,7 +113,7 @@ class DevolucionController {
             );
             $_SESSION['alert'] = ['icon'=>'info','title'=>'Rechazada','text'=>'Devolución rechazada'];
         }
-        header("Location: /power-net/views/admin/pago/devolucion.php"); exit;
+        header("Location: index.php?action=devoluciones"); exit;
     }
 
     // Admin: procesar reembolso
@@ -122,6 +122,6 @@ class DevolucionController {
             (new Devolucion())->cambiarEstado((int)$_GET['id'], 'completada');
             $_SESSION['alert'] = ['icon'=>'success','title'=>'Reembolso procesado','text'=>'El reembolso fue registrado como completado'];
         }
-        header("Location: /power-net/views/admin/pago/devolucion.php"); exit;
+        header("Location: index.php?action=devoluciones"); exit;
     }
 }

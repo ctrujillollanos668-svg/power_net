@@ -1,7 +1,7 @@
 <?php
 class Database {
     private $host     = "localhost";
-    private $db_name  = "powernet";
+    private $db_name  = "powernet28";
     private $username = "root";
     private $password = "";
 

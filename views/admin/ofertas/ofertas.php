@@ -1,7 +1,6 @@
 <?php
-session_start();
 if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] != 1) {
-    header("Location: /power-net/public/index.php"); exit;
+    header("Location: index.php"); exit;
 }
 require_once __DIR__ . '/../../../models/Oferta.php';
 require_once __DIR__ . '/../../../models/Product.php';
@@ -128,13 +127,13 @@ $productos    = $productModel->obtenerTodosAdmin();
                     <?php if ($o['estado'] == 1): ?>
                     <a href="#"
                        class="btn btn-sm btn-outline-warning"
-                       onclick="confirmarAccion('¿Desactivar esta oferta?', 'La oferta dejará de verse en la tienda.', '/power-net/public/index.php?action=desactivar_oferta&id=<?= $o['id_oferta'] ?>', 'warning')">
+                       onclick="confirmarAccion('¿Desactivar esta oferta?', 'La oferta dejará de verse en la tienda.', 'index.php?action=desactivar_oferta&id=<?= $o['id_oferta'] ?>', 'warning')">
                         <i class="bi bi-pause-circle"></i>
                     </a>
                     <?php else: ?>
                     <a href="#"
                        class="btn btn-sm btn-outline-success"
-                       onclick="confirmarAccion('¿Activar esta oferta?', 'La oferta será visible para los clientes.', '/power-net/public/index.php?action=activar_oferta&id=<?= $o['id_oferta'] ?>', 'success')">
+                       onclick="confirmarAccion('¿Activar esta oferta?', 'La oferta será visible para los clientes.', 'index.php?action=activar_oferta&id=<?= $o['id_oferta'] ?>', 'success')">
                         <i class="bi bi-play-circle"></i>
                     </a>
                     <?php endif; ?>
@@ -157,7 +156,7 @@ $productos    = $productModel->obtenerTodosAdmin();
 <div class="modal fade" id="modalNuevaOferta" tabindex="-1">
 <div class="modal-dialog modal-dialog-centered">
 <div class="modal-content border-0 shadow-lg" style="border-radius:16px;overflow:hidden;">
-<form method="POST" action="/power-net/public/index.php?action=guardar_oferta">
+<form method="POST" action="index.php?action=guardar_oferta">
 <div class="modal-header bg-warning text-dark border-0">
     <h5 class="modal-title fw-bold">🏷️ Nueva Oferta</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -219,7 +218,7 @@ $productos    = $productModel->obtenerTodosAdmin();
 <div class="modal fade" id="modalEditarOferta" tabindex="-1">
 <div class="modal-dialog modal-dialog-centered">
 <div class="modal-content border-0 shadow-lg" style="border-radius:16px;overflow:hidden;">
-<form method="POST" action="/power-net/public/index.php?action=editar_oferta">
+<form method="POST" action="index.php?action=editar_oferta">
 <div class="modal-header bg-primary text-white border-0">
     <h5 class="modal-title fw-bold">✏️ Editar Oferta</h5>
     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>

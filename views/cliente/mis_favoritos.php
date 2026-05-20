@@ -46,11 +46,11 @@ $productModel = $prodFavModel   ?? new Product();
                     <a href="index.php?action=detalle_producto&id=<?= $p['id_producto'] ?>"
                        class="pcard__img-wrap">
                         <?php if ($img): ?>
-                            <img src="/power-net/public/uploads/<?= htmlspecialchars($img) ?>"
+                            <img src="<?= UPLOADS_URL ?>/<?= htmlspecialchars($img) ?>"
                                  alt="<?= htmlspecialchars($p['nombre']) ?>"
                                  class="pcard__img">
                         <?php else: ?>
-                            <img src="/power-net/img/logo.jpg" alt="Sin imagen" class="pcard__img">
+                            <img src="<?= IMG_URL ?>/logo.jpg" alt="Sin imagen" class="pcard__img">
                         <?php endif; ?>
                         <?php if ($agotado): ?>
                             <div class="pcard__agotado-overlay">Agotado</div>

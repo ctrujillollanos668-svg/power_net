@@ -1,9 +1,7 @@
 <?php
-session_start();
-
 // 🔐 VALIDAR ADMIN
 if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] != 1) {
-    header("Location: /power-net/public/index.php");
+    header("Location: index.php");
     exit;
 }
 
@@ -99,12 +97,12 @@ $imgPrincipal = !empty($imagenes) ? $imagenes[0]['imagen'] : '';
     
     <div style="position:relative;">
 
-        <img src="/power-net/public/uploads/<?= $img['imagen'] ?>"
+        <img src="<?= UPLOADS_URL ?>/<?= $img['imagen'] ?>"
              style="width:40px; height:40px; object-fit:cover;"
              class="rounded border">
 
         <!-- ❌ BOTÓN ELIMINAR -->
-        <a href="/power-net/public/index.php?action=eliminar_imagen&id_imagen=<?= $img['id'] ?>&id_producto=<?= $p['id_producto'] ?>"
+        <a href="index.php?action=eliminar_imagen&id_imagen=<?= $img['id'] ?>&id_producto=<?= $p['id_producto'] ?>"
    style="
         position:absolute;
         top:-6px;
@@ -159,10 +157,10 @@ if ($ofertaActiva):
         <div class="small text-muted" style="font-size:10px;">
             hasta <?= date('d/m/Y', strtotime($ofertaActiva['fecha_fin'])) ?>
         </div>
-        <a href="/power-net/public/index.php?action=desactivar_oferta&id=<?= $ofertaActiva['id_oferta'] ?>"
+        <a href="index.php?action=desactivar_oferta&id=<?= $ofertaActiva['id_oferta'] ?>"
            class="btn btn-xs btn-outline-danger mt-1"
            style="font-size:11px;padding:1px 6px;"
-           onclick="return confirm('¿Desactivar esta oferta?')">
+           onclick="event.preventDefault(); confirmarDesactivarOferta(this.href)">
            Desactivar
         </a>
     </div>
@@ -183,7 +181,7 @@ if ($ofertaActiva):
 <div class="d-flex gap-2 align-items-center">
 
     <!-- SWITCH ACTIVAR / DESACTIVAR -->
-    <form method="GET" action="/power-net/public/index.php" class="m-0">
+    <form method="GET" action="index.php" class="m-0">
         <input type="hidden" name="action" value="toggle_producto">
         <input type="hidden" name="id" value="<?= $p['id_producto'] ?>">
 
@@ -243,7 +241,7 @@ if ($ofertaActiva):
 <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
 
 <form method="POST" enctype="multipart/form-data"
-action="/power-net/public/index.php?action=guardar_producto">
+action="index.php?action=guardar_producto">
 
 <!-- HEADER -->
 <div class="modal-header bg-dark text-white">
@@ -297,7 +295,7 @@ action="/power-net/public/index.php?action=guardar_producto">
 <div class="modal-content">
 
 <form method="POST" enctype="multipart/form-data"
-action="/power-net/public/index.php?action=editar_producto">
+action="index.php?action=editar_producto">
 
 <div class="modal-header">
     <h5 class="fw-bold">Editar Producto</h5>
@@ -380,7 +378,7 @@ action="/power-net/public/index.php?action=editar_producto">
 <div class="modal-dialog modal-dialog-centered">
 <div class="modal-content rounded-4 shadow">
 
-<form method="GET" action="/power-net/public/index.php">
+<form method="GET" action="index.php">
 
 <input type="hidden" name="action" value="eliminar_producto">
 <input type="hidden" name="id" id="delete_id">
@@ -462,7 +460,7 @@ document.getElementById('modalEditar').addEventListener('show.bs.modal', functio
     let imagen = b.dataset.imagen;
 
     if (imagen && imagen !== "") {
-        preview_imagen.src = "/power-net/public/uploads/" + imagen;
+        preview_imagen.src = "public/uploads/" + imagen;
     } else {
         preview_imagen.src = "https://via.placeholder.com/120";
     }
@@ -497,12 +495,29 @@ document.getElementById('modalEliminar').addEventListener('show.bs.modal', funct
     let imagen = b.dataset.imagen;
 
     if (imagen && imagen !== "") {
-        delete_imagen.src = "/power-net/public/uploads/" + imagen;
+        delete_imagen.src = "public/uploads/" + imagen;
     } else {
         delete_imagen.src = "https://via.placeholder.com/60";
     }
 
 });
+
+function confirmarDesactivarOferta(url) {
+    Swal.fire({
+        title: '¿Desactivar esta oferta?',
+        text: 'La oferta dejará de mostrarse a los clientes.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Sí, desactivar',
+        cancelButtonText: 'Cancelar'
+    }).then(result => {
+        if (result.isConfirmed) {
+            window.location.href = url;
+        }
+    });
+}
 </script>
 
 <!-- ================= MODAL OFERTA ================= -->
@@ -510,7 +525,7 @@ document.getElementById('modalEliminar').addEventListener('show.bs.modal', funct
 <div class="modal-dialog modal-dialog-centered">
 <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
 
-<form method="POST" action="/power-net/public/index.php?action=guardar_oferta">
+<form method="POST" action="index.php?action=guardar_oferta">
 
 <div class="modal-header bg-warning text-dark">
     <h5 class="mb-0 fw-bold">🏷️ Crear Oferta — <span id="oferta_nombre_titulo"></span></h5>

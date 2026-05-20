@@ -107,6 +107,10 @@ class ClienteController {
         $GLOBALS['tieneDireccion'] = !empty($GLOBALS['direccionPago']);
         $GLOBALS['clientePago']    = $clientePago;
 
+        // Métodos de pago definidos por el administrador (desde config)
+        $GLOBALS['metodosAdmin'] = require __DIR__ . '/../views/admin/pago/MetodosPago.php';
+        $GLOBALS['metodosAdmin'] = array_filter($GLOBALS['metodosAdmin'], fn($m) => $m['activo']);
+
         $productModelPago = new Product();
         $carritoDataPago  = Cart::obtener();
         $itemsCarritoPago = [];

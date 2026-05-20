@@ -7,7 +7,7 @@ class OfertaController {
     public function guardar() {
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header("Location: /power-net/views/admin/ofertas/ofertas.php");
+            header("Location: index.php?action=ofertas");
             exit;
         }
 
@@ -20,13 +20,13 @@ class OfertaController {
         // Validar campos
         if (!$id_producto || !$precio_oferta || !$fecha_inicio || !$fecha_fin) {
             $_SESSION['alert'] = ['icon'=>'error','title'=>'Datos incompletos','text'=>'Completa todos los campos'];
-            header("Location: /power-net/views/admin/ofertas/ofertas.php"); exit;
+            header("Location: index.php?action=ofertas"); exit;
         }
 
         // Validar que fecha_fin >= fecha_inicio
         if ($fecha_fin < $fecha_inicio) {
             $_SESSION['alert'] = ['icon'=>'error','title'=>'Fechas inválidas','text'=>'La fecha de fin debe ser mayor o igual a la fecha de inicio'];
-            header("Location: /power-net/views/admin/ofertas/ofertas.php"); exit;
+            header("Location: index.php?action=ofertas"); exit;
         }
 
         $ofertaModel = new Oferta();
@@ -40,7 +40,7 @@ class OfertaController {
         $ofertaModel->crear($id_producto, $precio_oferta, $descuento, $fecha_inicio, $fecha_fin);
 
         $_SESSION['alert'] = ['icon'=>'success','title'=>'🏷️ Oferta creada','text'=>'La oferta ya es visible para los clientes'];
-        header("Location: /power-net/views/admin/ofertas/ofertas.php"); exit;
+        header("Location: index.php?action=ofertas"); exit;
     }
 
     public function desactivar() {
@@ -50,7 +50,7 @@ class OfertaController {
             $ofertaModel->desactivar($id_oferta);
             $_SESSION['alert'] = ['icon'=>'success','title'=>'Desactivada','text'=>'Oferta desactivada correctamente'];
         }
-        header("Location: /power-net/views/admin/ofertas/ofertas.php"); exit;
+        header("Location: index.php?action=ofertas"); exit;
     }
 
     public function activar() {
@@ -62,7 +62,7 @@ class OfertaController {
                 ->execute([$id_oferta]);
             $_SESSION['alert'] = ['icon'=>'success','title'=>'Activada','text'=>'Oferta activada correctamente'];
         }
-        header("Location: /power-net/views/admin/ofertas/ofertas.php"); exit;
+        header("Location: index.php?action=ofertas"); exit;
     }
 
     public function editar() {
@@ -81,6 +81,6 @@ class OfertaController {
                 $_SESSION['alert'] = ['icon'=>'success','title'=>'Actualizada','text'=>'Oferta actualizada correctamente'];
             }
         }
-        header("Location: /power-net/views/admin/ofertas/ofertas.php"); exit;
+        header("Location: index.php?action=ofertas"); exit;
     }
 }

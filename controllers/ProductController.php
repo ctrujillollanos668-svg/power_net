@@ -37,7 +37,7 @@ class ProductController {
             }
         }
 
-        header("Location: /power-net/views/admin/productos/productos.php");
+        header("Location: index.php?action=productos");
         exit;
     }
 
@@ -49,7 +49,7 @@ class ProductController {
         $product = new Product();
         $product->toggle($id);
 
-        header("Location: /power-net/views/admin/productos/productos.php");
+        header("Location: index.php?action=productos");
         exit;
     }
 
@@ -74,7 +74,7 @@ class ProductController {
             ];
         }
 
-        header("Location: /power-net/views/admin/productos/productos.php");
+        header("Location: index.php?action=productos");
         exit;
     }
 
@@ -119,7 +119,7 @@ class ProductController {
             }
         }
 
-        header("Location: /power-net/views/admin/productos/productos.php");
+        header("Location: index.php?action=productos");
         exit;
     }
     // ================= ELIMINAR IMAGEN INDIVIDUAL =================
@@ -146,7 +146,7 @@ public function eliminarImagen() {
         $product->eliminarImagen($idImagen);
     }
 
-    header("Location: /power-net/views/admin/productos/productos.php");
+    header("Location: index.php?action=productos");
     exit;
 }
 }

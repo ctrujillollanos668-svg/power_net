@@ -76,6 +76,10 @@ switch ($action) {
         $categoryController->toggle();
         break;
 
+    case 'eliminar_categoria':
+        $categoryController->eliminar();
+        break;
+
     // =========================
     // USUARIO ROL
     // =========================
@@ -204,7 +208,89 @@ switch ($action) {
         break;
     case 'pedidos':
         require_once __DIR__ . '/../views/admin/pedidos/pedidos.php';
-        break;
+        exit;
+
+    // ── Vistas admin ──
+    case 'dashboard':
+        require_once __DIR__ . '/../views/admin/dashboard.php';
+        exit;
+
+    case 'productos':
+        require_once __DIR__ . '/../views/admin/productos/productos.php';
+        exit;
+
+    case 'categorias':
+        require_once __DIR__ . '/../views/admin/categoria/categorias.php';
+        exit;
+
+    case 'inventario':
+        require_once __DIR__ . '/../views/admin/inventario/inventario.php';
+        exit;
+
+    case 'envios':
+        require_once __DIR__ . '/../views/admin/envios/envios.php';
+        exit;
+
+    case 'ventas':
+        require_once __DIR__ . '/../views/admin/pago/ventas.php';
+        exit;
+
+    case 'devoluciones':
+        require_once __DIR__ . '/../views/admin/pago/devolucion.php';
+        exit;
+
+    case 'pagos':
+        require_once __DIR__ . '/../views/admin/pago/pago.php';
+        exit;
+
+    case 'guardar_metodo_config':
+    case 'editar_metodo_config':
+    case 'eliminar_metodo_config':
+        if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] != 1) {
+            header("Location: index.php"); exit;
+        }
+        $configPath = __DIR__ . '/../views/admin/pago/MetodosPago.php';
+        $metodos    = require $configPath;
+
+        if ($action === 'guardar_metodo_config') {
+            $metodos[] = [
+                'id'            => 'metodo_' . time(),
+                'nombre'        => trim($_POST['nombre']        ?? ''),
+                'icono'         => trim($_POST['icono']         ?? '💰'),
+                'descripcion'   => trim($_POST['descripcion']   ?? ''),
+                'instrucciones' => trim($_POST['instrucciones'] ?? ''),
+                'activo'        => isset($_POST['activo']),
+            ];
+        } elseif ($action === 'editar_metodo_config') {
+            $idx = (int)($_POST['indice'] ?? -1);
+            if (isset($metodos[$idx])) {
+                $metodos[$idx]['nombre']        = trim($_POST['nombre']        ?? '');
+                $metodos[$idx]['icono']         = trim($_POST['icono']         ?? '💰');
+                $metodos[$idx]['descripcion']   = trim($_POST['descripcion']   ?? '');
+                $metodos[$idx]['instrucciones'] = trim($_POST['instrucciones'] ?? '');
+                $metodos[$idx]['activo']        = isset($_POST['activo']);
+            }
+        } elseif ($action === 'eliminar_metodo_config') {
+            $idx = (int)($_GET['indice'] ?? -1);
+            if (isset($metodos[$idx])) {
+                array_splice($metodos, $idx, 1);
+            }
+        }
+
+        // Reescribir el archivo de config
+        $php = "<?php\nreturn " . var_export($metodos, true) . ";\n";
+        file_put_contents($configPath, $php);
+
+        $_SESSION['alert'] = ['icon'=>'success','title'=>'Guardado','text'=>'Método de pago actualizado'];
+        header("Location: index.php?action=pagos&tab=metodos"); exit;
+
+    case 'proveedores':
+        require_once __DIR__ . '/../views/admin/proveedores/proveedores.php';
+        exit;
+
+    case 'ofertas_admin':
+        require_once __DIR__ . '/../views/admin/ofertas/ofertas.php';
+        exit;
 
     // ── Ofertas admin ──
     case 'guardar_oferta':
@@ -232,10 +318,12 @@ switch ($action) {
     case 'guardar_proveedor':
     case 'editar_proveedor':
     case 'eliminar_proveedor':
+    case 'toggle_proveedor':
         match($action) {
             'guardar_proveedor'  => $provCtrl->guardar(),
             'editar_proveedor'   => $provCtrl->editar(),
             'eliminar_proveedor' => $provCtrl->eliminar(),
+            'toggle_proveedor'   => $provCtrl->toggle(),
         };
         exit;
 
@@ -269,3 +357,5 @@ switch ($action) {
         break;
 }
 }
+
+ 

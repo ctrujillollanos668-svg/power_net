@@ -1,7 +1,6 @@
 <?php
-session_start();
 if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] != 1) {
-    header("Location: /power-net/public/index.php"); exit;
+    header("Location: index.php"); exit;
 }
 require_once __DIR__ . '/../../../config/Database.php';
 require_once __DIR__ . '/../../../models/Envio.php';
@@ -168,7 +167,7 @@ $entregados= count(array_filter($envios, fn($e) => $e['estado'] === 'entregado')
 <div class="modal fade" id="modalNuevoEnvio" tabindex="-1">
 <div class="modal-dialog modal-dialog-centered">
 <div class="modal-content border-0 shadow-lg" style="border-radius:16px;overflow:hidden;">
-<form method="POST" action="/power-net/public/index.php?action=guardar_envio">
+<form method="POST" action="index.php?action=guardar_envio">
 <div class="modal-header bg-dark text-white border-0">
     <h5 class="modal-title fw-bold">🚚 Registrar Envío</h5>
     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -214,7 +213,7 @@ $entregados= count(array_filter($envios, fn($e) => $e['estado'] === 'entregado')
 <div class="modal fade" id="modalEstadoEnvio" tabindex="-1">
 <div class="modal-dialog modal-dialog-centered">
 <div class="modal-content border-0 shadow-lg" style="border-radius:16px;overflow:hidden;">
-<form method="POST" action="/power-net/public/index.php?action=actualizar_estado_envio">
+<form method="POST" action="index.php?action=actualizar_estado_envio">
 <div class="modal-header bg-dark text-white border-0">
     <h5 class="modal-title fw-bold">🔄 Actualizar estado del envío</h5>
     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -263,7 +262,7 @@ function eliminarEnvio(id) {
     Swal.fire({title:'¿Eliminar envío?',text:'Esta acción no se puede deshacer.',icon:'warning',
         showCancelButton:true,confirmButtonColor:'#dc2626',cancelButtonColor:'#6b7280',
         confirmButtonText:'Sí, eliminar',cancelButtonText:'Cancelar'
-    }).then(r => { if (r.isConfirmed) window.location.href='/power-net/public/index.php?action=eliminar_envio&id='+id; });
+    }).then(r => { if (r.isConfirmed) window.location.href='index.php?action=eliminar_envio&id='+id; });
 }
 </script>
 </body>

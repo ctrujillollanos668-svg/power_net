@@ -32,7 +32,7 @@ $totalGeneral = $totalGeneral ?? 0;
                 <td>
                     <div class="d-flex align-items-center gap-3">
 
-                        <img src="/power-net/public/uploads/<?= $producto['imagen'] ?>"
+                        <img src="<?= UPLOADS_URL ?>/<?= $producto['imagen'] ?>"
                              class="rounded-3 shadow-sm"
                              style="width:60px;height:60px;object-fit:cover;">
 

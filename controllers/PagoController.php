@@ -1,3 +1,4 @@
+
 <?php
 require_once __DIR__ . '/../models/Cliente.php';
 require_once __DIR__ . '/../models/MetodoPago.php';
@@ -241,6 +242,25 @@ class PagoController {
             header("Location: index.php?action=procesar_pago"); exit;
         }
 
+        // Determinar si es método admin (admin_X) o método del cliente (numérico)
+        $esMetodoAdmin = str_starts_with((string)$id_metodo, 'admin_');
+        $tipoMetodo    = 'otro';
+
+        if ($esMetodoAdmin) {
+            $id_metodo_admin  = (int)str_replace('admin_', '', $id_metodo);
+            $metodosConfig    = require __DIR__ . '/../views/admin/pago/MetodosPago.php';
+            foreach ($metodosConfig as $mc) {
+                if ($mc['id'] === 'metodo_' . $id_metodo_admin || str_replace('admin_','',$_POST['metodo_guardado']) === $mc['id']) {
+                    $tipoMetodo = $mc['nombre']; break;
+                }
+            }
+            // Buscar por índice si no encontró por id
+            if ($tipoMetodo === 'otro' && isset($metodosConfig[$id_metodo_admin])) {
+                $tipoMetodo = $metodosConfig[$id_metodo_admin]['nombre'];
+            }
+            $id_metodo = null;
+        }
+
         $cart = Cart::obtener();
         if (empty($cart)) {
             $_SESSION['alert'] = ['icon'=>'error','title'=>'Carrito vacío','text'=>'No hay productos en el carrito'];
@@ -248,17 +268,15 @@ class PagoController {
         }
 
         try {
-            $db = new PDO(
-                "mysql:host=localhost;dbname=powernet;charset=utf8",
-                "root", "",
-                [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_EMULATE_PREPARES => false]
-            );
+            $dbObj = new Database();
+            $db    = $dbObj->getConnection();
 
             $metodoModel    = new MetodoPago();
             $metodosCliente = $metodoModel->obtenerPorCliente($id_cliente);
-            $tipoMetodo     = 'tarjeta';
-            foreach ($metodosCliente as $m) {
-                if ($m['id_metodo'] == $id_metodo) { $tipoMetodo = $m['tipo']; break; }
+            if (!$esMetodoAdmin) {
+                foreach ($metodosCliente as $m) {
+                    if ($m['id_metodo'] == $id_metodo) { $tipoMetodo = $m['tipo']; break; }
+                }
             }
 
             $total = 0; $items = []; $sinStock = [];

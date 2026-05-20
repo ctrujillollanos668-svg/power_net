@@ -12,7 +12,7 @@ class ProveedorController {
             );
             $_SESSION['alert'] = ['icon'=>'success','title'=>'Guardado','text'=>'Proveedor creado correctamente'];
         }
-        header("Location: /power-net/views/admin/proveedores/proveedores.php"); exit;
+        header("Location: index.php?action=proveedores"); exit;
     }
 
     public function editar() {
@@ -25,7 +25,7 @@ class ProveedorController {
             );
             $_SESSION['alert'] = ['icon'=>'success','title'=>'Actualizado','text'=>'Proveedor actualizado correctamente'];
         }
-        header("Location: /power-net/views/admin/proveedores/proveedores.php"); exit;
+        header("Location: index.php?action=proveedores"); exit;
     }
 
     public function eliminar() {
@@ -37,6 +37,13 @@ class ProveedorController {
                 $_SESSION['alert'] = ['icon'=>'success','title'=>'Eliminado','text'=>'Proveedor eliminado correctamente'];
             }
         }
-        header("Location: /power-net/views/admin/proveedores/proveedores.php"); exit;
+        header("Location: index.php?action=proveedores"); exit;
+    }
+
+    public function toggle() {
+        if (isset($_GET['id'])) {
+            (new Proveedor())->toggleActivo((int)$_GET['id']);
+        }
+        header("Location: index.php?action=proveedores"); exit;
     }
 }

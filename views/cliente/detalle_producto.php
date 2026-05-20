@@ -44,7 +44,7 @@ $productModel = $productDetalle ?? new Product();
                             <?php if (!empty($imagenes)): ?>
 
                                 <?php foreach ($imagenes as $img): ?>
-                                    <img src="/power-net/public/uploads/<?= $img['imagen'] ?>"
+                                    <img src="<?= UPLOADS_URL ?>/<?= $img['imagen'] ?>"
                                          onclick="cambiarImagen(this)"
                                          class="border rounded"
                                          style="width:75px; height:85px; object-fit:cover; cursor:pointer;">
@@ -52,7 +52,7 @@ $productModel = $productDetalle ?? new Product();
 
                             <?php else: ?>
 
-                                <img src="/power-net/img/logo.jpg"
+                                <img src="<?= IMG_URL ?>/logo.jpg"
                                      class="border rounded"
                                      style="width:75px; height:85px; object-fit:cover;">
 
@@ -66,11 +66,11 @@ $productModel = $productDetalle ?? new Product();
 
                             <?php if (!empty($imagenes)): ?>
                                 <img id="imagenPrincipal"
-                                     src="/power-net/public/uploads/<?= $imagenes[0]['imagen'] ?>"
+                                     src="<?= UPLOADS_URL ?>/<?= $imagenes[0]['imagen'] ?>"
                                      style="max-width:100%; max-height:100%; object-fit:contain;">
                             <?php else: ?>
                                 <img id="imagenPrincipal"
-                                     src="/power-net/img/logo.jpg"
+                                     src="<?= IMG_URL ?>/logo.jpg"
                                      style="max-width:100%; max-height:100%; object-fit:contain;">
                             <?php endif; ?>
 
@@ -216,11 +216,11 @@ $productModel = $productDetalle ?? new Product();
                             <div class="card h-100 shadow-sm border-0 product-card">
 
                                 <?php if ($imgRel): ?>
-                                    <img src="/power-net/public/uploads/<?= $imgRel ?>"
+                                    <img src="<?= UPLOADS_URL ?>/<?= $imgRel ?>"
                                          class="card-img-top"
                                          style="height:180px; object-fit:cover;">
                                 <?php else: ?>
-                                    <img src="/power-net/img/logo.jpg"
+                                    <img src="<?= IMG_URL ?>/logo.jpg"
                                          class="card-img-top"
                                          style="height:180px; object-fit:cover;">
                                 <?php endif; ?>

@@ -1,7 +1,6 @@
 <?php
-session_start();
 if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] != 1) {
-    header("Location: /power-net/public/index.php"); exit;
+    header("Location: index.php"); exit;
 }
 require_once __DIR__ . '/../../../models/Venta.php';
 
@@ -152,7 +151,7 @@ $todasVentas = $ventaModel->filtrar(
         </div>
         <div class="col-md-3 d-flex gap-2">
             <button type="submit" class="btn btn-dark btn-sm px-4">🔍 Filtrar</button>
-            <a href="/power-net/views/admin/pago/ventas.php" class="btn btn-outline-secondary btn-sm">✕ Limpiar</a>
+            <a href="index.php?action=ventas" class="btn btn-outline-secondary btn-sm">✕ Limpiar</a>
         </div>
     </form>
     </div>
@@ -266,7 +265,7 @@ $todasVentas = $ventaModel->filtrar(
 <div class="modal fade" id="modalEstado" tabindex="-1">
 <div class="modal-dialog modal-dialog-centered">
 <div class="modal-content border-0 shadow-lg" style="border-radius:16px;overflow:hidden;">
-<form method="POST" action="/power-net/public/index.php?action=actualizar_estado_venta">
+<form method="POST" action="index.php?action=actualizar_estado_venta">
 <div class="modal-header bg-dark text-white border-0">
     <h5 class="modal-title fw-bold">🔄 Actualizar estado de la venta</h5>
     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -301,7 +300,7 @@ function confirmarEliminar(id) {
         cancelButtonText: 'Cancelar'
     }).then(r => {
         if (r.isConfirmed)
-            window.location.href = '/power-net/public/index.php?action=eliminar_venta&id=' + id;
+            window.location.href = 'index.php?action=eliminar_venta&id=' + id;
     });
 }
 </script>

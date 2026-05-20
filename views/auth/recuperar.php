@@ -9,7 +9,7 @@
     </p>
 
     <!-- FORMULARIO -->
-    <form method="POST" action="/power-net/public/index.php?action=enviar_recuperacion">
+    <form method="POST" action="index.php?action=enviar_recuperacion">
 
         <!-- CORREO -->
         <div class="mb-3">

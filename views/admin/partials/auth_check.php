@@ -2,9 +2,8 @@
 // Protección de acceso al panel admin
 // Incluir al inicio de cada vista del admin
 if (session_status() === PHP_SESSION_NONE) {
-    session_start();
 }
 if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] != 1) {
-    header("Location: /power-net/public/index.php");
+    header("Location: index.php");
     exit;
 }

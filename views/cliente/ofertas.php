@@ -372,11 +372,11 @@
                 <a href="index.php?action=detalle_producto&id=<?= $o['id_producto'] ?>"
                    class="oferta-img-wrap">
                     <?php if ($o['imagen']): ?>
-                        <img src="/power-net/public/uploads/<?= htmlspecialchars($o['imagen']) ?>"
+                        <img src="<?= UPLOADS_URL ?>/<?= htmlspecialchars($o['imagen']) ?>"
                              alt="<?= htmlspecialchars($o['nombre']) ?>"
                              class="oferta-img">
                     <?php else: ?>
-                        <img src="/power-net/img/logo.jpg" alt="Sin imagen" class="oferta-img">
+                        <img src="<?= IMG_URL ?>/logo.jpg" alt="Sin imagen" class="oferta-img">
                     <?php endif; ?>
                 </a>
 

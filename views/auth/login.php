@@ -2,7 +2,7 @@
 
     <!-- LOGO -->
     <div style="text-align:center;margin-bottom:28px;">
-        <img src="/power-net/img/logo.jpg"
+        <img src="<?= IMG_URL ?>/logo.jpg"
              style="width:72px;height:72px;object-fit:cover;border-radius:16px;margin-bottom:14px;">
         <h2 style="font-size:26px;font-weight:900;color:#1e293b;margin:0 0 6px;">Power Net</h2>
         <p style="font-size:14px;color:#64748b;margin:0;">Accede a tu cuenta</p>
@@ -10,7 +10,7 @@
 
     <!-- LOGIN -->
     <div id="formLogin">
-        <form action="/power-net/public/index.php?action=login" method="POST">
+        <form action="index.php?action=login" method="POST">
 
             <div style="margin-bottom:18px;">
                 <label style="font-size:13px;font-weight:700;color:#64748b;display:block;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;">Correo</label>
@@ -56,7 +56,7 @@
     <div id="formRegistro" style="display:none;">
         <h4 style="font-size:18px;font-weight:800;color:#1e293b;margin:0 0 20px;">Crear cuenta</h4>
 
-        <form action="/power-net/public/index.php?action=register" method="POST" id="registerForm">
+        <form action="index.php?action=register" method="POST" id="registerForm">
 
             <?php
             $inputStyle = "width:100%;padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;outline:none;font-family:inherit;margin-bottom:12px;box-sizing:border-box;";
@@ -102,7 +102,7 @@
             Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.
         </p>
 
-        <form method="POST" action="/power-net/public/index.php?action=enviar_recuperacion">
+        <form method="POST" action="index.php?action=enviar_recuperacion">
             <input type="email" name="email" required placeholder="Correo electrónico"
                    style="width:100%;padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;outline:none;font-family:inherit;margin-bottom:16px;box-sizing:border-box;"
                    onfocus="this.style.borderColor='#7c3aed'" onblur="this.style.borderColor='#e2e8f0'">

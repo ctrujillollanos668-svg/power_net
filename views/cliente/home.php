@@ -29,7 +29,11 @@ $productos       = $productos       ?? [];
         </div>
        <div class="relative">
     <img
+<<<<<<< HEAD
         src="<?= IMG_URL ?>/ia.png"
+=======
+        src="/power-net/img/ia.png"
+>>>>>>> 5d405ce413be4185aafbe4bd95866b0cad3f7dc5
         alt="Trabajadores en construcción"
         class="h-[260px] w-full rounded-3xl object-cover shadow-lg md:h-[340px]"
     >

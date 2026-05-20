@@ -1,6 +1,8 @@
 <?php
 // Variables desde index.php (case 'pago_exitoso'):
-// $id_pedido_ok, $factura_ok, $total_ok
+$id_pedido_ok = $GLOBALS['id_pedido_ok'] ?? 0;
+$factura_ok   = $GLOBALS['factura_ok']   ?? '—';
+$total_ok     = $GLOBALS['total_ok']     ?? 0;
 ?>
 
 <style>

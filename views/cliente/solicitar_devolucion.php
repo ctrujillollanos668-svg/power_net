@@ -558,7 +558,11 @@ if (!isset($pedidoDev, $detalleDev)) {
 
                         <div class="prod-img-box">
                             <?php if ($img): ?>
+<<<<<<< HEAD
                                 <img src="<?= UPLOADS_URL ?>/<?= htmlspecialchars($img) ?>"
+=======
+                                <img src="/power-net/public/uploads/<?= htmlspecialchars($img) ?>"
+>>>>>>> 5d405ce413be4185aafbe4bd95866b0cad3f7dc5
                                      alt="<?= htmlspecialchars($d['nombre'] ?? '') ?>">
                             <?php else: ?>
                                 <span>📦</span>

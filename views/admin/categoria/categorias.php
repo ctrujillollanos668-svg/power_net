@@ -129,7 +129,11 @@ $categorias = $category->obtenerTodas();
 
     <!-- ELIMINAR -->
     <button type="button" class="btn btn-sm btn-outline-danger"
+<<<<<<< HEAD
         onclick="confirmarEliminar('index.php?action=eliminar_categoria&id=<?= $c['id_categoria'] ?>')">
+=======
+        onclick="confirmarEliminar('/power-net/public/index.php?action=eliminar_categoria&id=<?= $c['id_categoria'] ?>')">
+>>>>>>> 5d405ce413be4185aafbe4bd95866b0cad3f7dc5
         <i class="bi bi-trash"></i>
     </button>
 

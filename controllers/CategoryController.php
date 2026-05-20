@@ -53,6 +53,28 @@ class CategoryController {
         exit;
     }
 
+    public function eliminar() {
+        $id = $_GET['id'] ?? 0;
+        $resultado = $this->model->eliminar($id);
+
+        if ($resultado['bloqueado']) {
+            $_SESSION['alert'] = [
+                'icon'  => 'warning',
+                'title' => '⚠️ No se puede eliminar',
+                'text'  => $resultado['mensaje']
+            ];
+        } else {
+            $_SESSION['alert'] = [
+                'icon'  => 'success',
+                'title' => 'Eliminado',
+                'text'  => 'La categoría fue eliminada correctamente.'
+            ];
+        }
+
+        header("Location: /power-net/views/admin/categoria/categorias.php");
+        exit;
+    }
+
    public function toggle() {
 
         $id        = $_GET['id'];

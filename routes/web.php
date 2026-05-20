@@ -126,9 +126,9 @@ switch ($action) {
         if (!$datos) {
             header("Location: index.php?action=mis_pedidos"); exit;
         }
-        $id_pedido_ok = $datos['id_pedido'];
-        $factura_ok   = $datos['factura'];
-        $total_ok     = $datos['total'];
+        $GLOBALS['id_pedido_ok'] = $datos['id_pedido'];
+        $GLOBALS['factura_ok']   = $datos['factura'];
+        $GLOBALS['total_ok']     = $datos['total'];
         unset($_SESSION['pago_exitoso']);
         $vista = 'pago_exitoso';
         break;

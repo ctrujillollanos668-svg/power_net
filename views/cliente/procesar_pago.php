@@ -418,7 +418,11 @@ if (!isset($itemsCarritoPago, $totalCarritoPago, $metodosPago, $direccionPago, $
                                 <td>
                                     <div style="display:flex;align-items:center;">
                                         <?php if ($item['imagen']): ?>
+<<<<<<< HEAD
                                             <img src="<?= UPLOADS_URL ?>/<?= htmlspecialchars($item['imagen']) ?>"
+=======
+                                            <img src="/power-net/public/uploads/<?= htmlspecialchars($item['imagen']) ?>"
+>>>>>>> 5d405ce413be4185aafbe4bd95866b0cad3f7dc5
                                                  class="prod-img" alt="">
                                         <?php endif; ?>
                                         <div>
@@ -487,6 +491,7 @@ if (!isset($itemsCarritoPago, $totalCarritoPago, $metodosPago, $direccionPago, $
                 <div class="co-section-header">💳 Selecciona tu método de pago</div>
                 <div class="co-section-body">
 
+<<<<<<< HEAD
                     <?php
                     $metodosAdmin = $GLOBALS['metodosAdmin'] ?? [];
                     $iconosAdmin  = ['tarjeta'=>'💳','transferencia'=>'🏦','efectivo'=>'💵','nequi'=>'🟣','daviplata'=>'🔴','otro'=>'💰'];
@@ -532,6 +537,11 @@ if (!isset($itemsCarritoPago, $totalCarritoPago, $metodosPago, $direccionPago, $
                             <p style="font-size:12px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 10px;">
                                 Mis métodos guardados
                             </p>
+=======
+                    <?php if (!empty($metodosPago) && $tieneDireccion): ?>
+
+                        <form method="POST" action="index.php?action=confirmar_pago">
+>>>>>>> 5d405ce413be4185aafbe4bd95866b0cad3f7dc5
                             <?php foreach ($metodosPago as $m): ?>
                             <div class="metodo-item"
                                  onclick="document.getElementById('metodo_<?= $m['id_metodo'] ?>').click()">
@@ -555,8 +565,11 @@ if (!isset($itemsCarritoPago, $totalCarritoPago, $metodosPago, $direccionPago, $
                                 </div>
                             </div>
                             <?php endforeach; ?>
+<<<<<<< HEAD
                             <?php endif; ?>
 
+=======
+>>>>>>> 5d405ce413be4185aafbe4bd95866b0cad3f7dc5
                             <button type="submit" class="btn-pagar">
                                 ✅ Pagar $<?= number_format($totalCarritoPago,0,',','.') ?>
                             </button>
@@ -568,7 +581,11 @@ if (!isset($itemsCarritoPago, $totalCarritoPago, $metodosPago, $direccionPago, $
                     <?php else: ?>
                         <div style="text-align:center;padding:20px;color:#9ca3af;">
                             <div style="font-size:40px;margin-bottom:8px;">💳</div>
+<<<<<<< HEAD
                             <p>No hay métodos de pago disponibles aún.</p>
+=======
+                            <p>No tienes métodos guardados.<br>Agrega uno en el panel de la derecha.</p>
+>>>>>>> 5d405ce413be4185aafbe4bd95866b0cad3f7dc5
                         </div>
                     <?php endif; ?>
 
@@ -580,6 +597,7 @@ if (!isset($itemsCarritoPago, $totalCarritoPago, $metodosPago, $direccionPago, $
         <!-- DERECHA -->
         <div class="col-lg-5">
 
+<<<<<<< HEAD
             <!-- PANEL DATOS DEL MÉTODO SELECCIONADO -->
             <div class="co-section mb-4" id="panelDatosMetodo" style="display:none;">
                 <div class="co-section-header" id="panelDatosHeader">📋 Datos del método</div>
@@ -615,6 +633,32 @@ if (!isset($itemsCarritoPago, $totalCarritoPago, $metodosPago, $direccionPago, $
                             ✏️ Cambiar datos
                         </button>
                     </div>
+=======
+            <!-- MÉTODO DE PAGO -->
+            <div class="co-section mb-4">
+                <div class="co-section-header">➕ Agregar método de pago</div>
+                <div class="co-section-body">
+                    <form method="POST" action="index.php?action=guardar_metodo">
+                        <div class="mb-3">
+                            <label class="form-label">Tipo</label>
+                            <select name="tipo" class="form-select" required>
+                                <option value="tarjeta">💳 Tarjeta de crédito/débito</option>
+                                <option value="transferencia">🏦 Transferencia bancaria</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Número de tarjeta / cuenta</label>
+                            <input type="text" name="numero" class="form-control"
+                                   placeholder="4111 1111 1111 1111" maxlength="19" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Titular</label>
+                            <input type="text" name="titular" class="form-control"
+                                   placeholder="Nombre como aparece en la tarjeta" required>
+                        </div>
+                        <button type="submit" class="btn-guardar">💾 Guardar método</button>
+                    </form>
+>>>>>>> 5d405ce413be4185aafbe4bd95866b0cad3f7dc5
                 </div>
             </div>
 
@@ -736,6 +780,7 @@ if (!isset($itemsCarritoPago, $totalCarritoPago, $metodosPago, $direccionPago, $
 </div>
 
 <script>
+<<<<<<< HEAD
 // ── Datos de métodos admin desde PHP ──
 const metodosAdmin = <?php
     $metodosConfig = require __DIR__ . '/../../views/admin/pago/MetodosPago.php';
@@ -844,6 +889,31 @@ function confirmarEliminar(id) {
 function abrirEditarDir(dir) {
     document.getElementById('dir_direccion').value = dir;
     _abrirModal('modalEditarDir');
+=======
+function abrirEditar(id, tipo, numero, titular) {
+    document.getElementById('edit_id').value      = id;
+    document.getElementById('edit_tipo').value    = tipo;
+    document.getElementById('edit_numero').value  = numero;
+    document.getElementById('edit_titular').value = titular;
+    new bootstrap.Modal(document.getElementById('modalEditarMetodo')).show();
+}
+function confirmarEliminar(id) {
+    Swal.fire({ title:'¿Eliminar método?', text:'Esta acción no se puede deshacer.', icon:'warning',
+        showCancelButton:true, confirmButtonColor:'#dc2626', cancelButtonColor:'#6b7280',
+        confirmButtonText:'Sí, eliminar', cancelButtonText:'Cancelar'
+    }).then(r => { if (r.isConfirmed) window.location.href = 'index.php?action=eliminar_metodo&id=' + id; });
+}
+function abrirEditarDir(dir) {
+    const modalEl = document.getElementById('modalEditarDir');
+    document.getElementById('dir_direccion').value = dir;
+    document.body.appendChild(modalEl);
+    const modal = new bootstrap.Modal(modalEl);
+    modalEl.addEventListener('shown.bs.modal', function handler() {
+        document.getElementById('dir_direccion').focus();
+        modalEl.removeEventListener('shown.bs.modal', handler);
+    });
+    modal.show();
+>>>>>>> 5d405ce413be4185aafbe4bd95866b0cad3f7dc5
 }
 function confirmarEliminarDir() {
     Swal.fire({ title:'¿Eliminar dirección?', text:'Se borrará tu dirección de envío.', icon:'warning',
@@ -851,6 +921,7 @@ function confirmarEliminarDir() {
         confirmButtonText:'Sí, eliminar', cancelButtonText:'Cancelar'
     }).then(r => { if (r.isConfirmed) window.location.href = 'index.php?action=eliminar_direccion'; });
 }
+<<<<<<< HEAD
 
 function _abrirModal(id) {
     document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
@@ -869,4 +940,6 @@ function _abrirModal(id) {
         modalEl.removeEventListener('shown.bs.modal', handler);
     });
 }
+=======
+>>>>>>> 5d405ce413be4185aafbe4bd95866b0cad3f7dc5
 </script>

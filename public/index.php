@@ -181,7 +181,11 @@ if ($vista === 'carrito') {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<<<<<<< HEAD
     <link href="assets/css/store.css" rel="stylesheet">
+=======
+    <link href="/power-net/public/assets/css/store.css" rel="stylesheet">
+>>>>>>> 5d405ce413be4185aafbe4bd95866b0cad3f7dc5
 </head>
 <body class="d-flex flex-column min-vh-100 text-slate-900 antialiased selection:bg-brand-200 selection:text-brand-800" <?= isset($_SESSION['usuario']) ? 'data-logueado="1"' : '' ?>>
     
@@ -311,7 +315,11 @@ if ($vista === 'carrito') {
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<<<<<<< HEAD
 <script src="assets/js/store.js"></script>
+=======
+<script src="/power-net/public/assets/js/store.js"></script>
+>>>>>>> 5d405ce413be4185aafbe4bd95866b0cad3f7dc5
 
 <?php if (!empty($_SESSION['open_login'])): ?>
 <script>
